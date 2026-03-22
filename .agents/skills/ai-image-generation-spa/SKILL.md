@@ -17,9 +17,9 @@ const API_KEY = 'YOUR_GEMINI_API_KEY';
 const API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 
 const MODELS = {
-  text:    'gemini-2.5-flash-preview-04-17',        // Translation, Inspire Me, Image-to-Text
-  flash:   'gemini-2.5-flash-preview-04-17',        // Fast gen, Magic Edit, Upscale  
-  imagen:  'imagen-4.0-generate-001',                // High-quality Text-to-Image
+  text:    'gemini-2.0-flash',                  // Translation, Inspire Me, Image-to-Text
+  flash:   'gemini-2.0-flash-exp',              // Fast gen, Magic Edit, Upscale (image output)
+  imagen:  'imagen-3.0-generate-001',           // High-quality Text-to-Image
 };
 
 const SAFETY_SETTINGS = [
