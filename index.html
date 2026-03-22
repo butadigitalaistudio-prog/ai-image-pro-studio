@@ -1,0 +1,912 @@
+<!DOCTYPE html><html class="dark" lang="th"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Image Pro Studio | Cinema Gear Enhanced</title>
+<meta name="description" content="สร้างภาพ AI ระดับมืออาชีพด้วย Neon Observatory — รองรับภาษาไทย, Cinema Gear, Typography Studio">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Kanit:wght@300;400;600;700&family=Sarabun:wght@300;400;600;700&family=Prompt:wght@300;400;600&family=Mitr:wght@300;400;600&family=Pridi:wght@300;400;600&family=Itim&family=Taviraj:wght@300;400;600&family=Krub:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface":"#0e0e0e","surface-dim":"#0e0e0e","surface-container-lowest":"#000000","surface-container-low":"#131313","surface-container":"#1a1a1a","surface-container-high":"#20201f","surface-container-highest":"#262626","surface-bright":"#2c2c2c","surface-variant":"#262626","surface-tint":"#b6a0ff","background":"#0e0e0e","on-background":"#ffffff","on-surface":"#ffffff","on-surface-variant":"#adaaaa","primary":"#b6a0ff","primary-dim":"#7e51ff","primary-container":"#a98fff","primary-fixed":"#a98fff","primary-fixed-dim":"#9c7eff","on-primary":"#340090","on-primary-fixed":"#000000","on-primary-container":"#280072","inverse-primary":"#6834eb","secondary":"#c492fe","secondary-dim":"#b987f2","secondary-container":"#5d2c92","on-secondary":"#3e0174","on-secondary-container":"#e2c5ff","tertiary":"#ff97b8","tertiary-dim":"#ef77a0","tertiary-container":"#fc81ab","on-tertiary":"#6a0936","error":"#ff6e84","error-dim":"#d73357","error-container":"#a70138","on-error":"#490013","outline":"#767575","outline-variant":"#484847","inverse-surface":"#fcf9f8","inverse-on-surface":"#565555"},fontFamily:{"headline":["Manrope"],"body":["Inter"],"label":["Inter"]},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"}}}}</script>
+<style>
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#0e0e0e}::-webkit-scrollbar-thumb{background:#262626;border-radius:10px}::-webkit-scrollbar-thumb:hover{background:#b6a0ff33}
+.glass-panel{background:rgba(32,32,31,0.6);backdrop-filter:blur(24px)}
+.gradient-primary{background:linear-gradient(135deg,#b6a0ff 0%,#7e51ff 100%)}
+.text-neon-glow{text-shadow:0 0 10px rgba(182,160,255,0.4)}
+.preset-btn{background:#262626;color:#fff;padding:.375rem .5rem;border-radius:.125rem;font-size:.625rem;font-weight:700;text-transform:uppercase;letter-spacing:-.025em;border:1px solid transparent;transition:all .2s;cursor:pointer}
+.preset-btn:hover{background:#2c2c2c}.preset-btn.active{border-color:rgba(182,160,255,.6);background:rgba(182,160,255,.1);color:#b6a0ff}
+@keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.animate-spin-slow{animation:spin-slow 2s linear infinite}
+@keyframes shimmer-move{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.shimmer{background:linear-gradient(90deg,transparent,rgba(182,160,255,.1),transparent);background-size:200% 100%;animation:shimmer-move 2s linear infinite}
+.aspect-btn{background:#262626;padding:.5rem;border-radius:.125rem;display:flex;flex-direction:column;align-items:center;gap:.125rem;flex:1;cursor:pointer;border:1px solid transparent;transition:all .2s}
+.aspect-btn.active{border-color:rgba(182,160,255,.5);background:rgba(182,160,255,.08)}
+.aspect-btn:not(.active):hover{background:#2c2c2c}
+</style>
+</head>
+<body class="bg-background text-on-background font-body overflow-hidden">
+
+<!-- ===== TOP NAV ===== -->
+<header class="fixed top-0 w-full z-50 bg-[#0e0e0e]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex justify-between items-center px-6 h-16">
+  <div class="flex items-center gap-6">
+    <span class="font-headline font-black text-lg bg-gradient-to-br from-violet-300 to-violet-600 bg-clip-text text-transparent tracking-tight">AI Image Pro Studio</span>
+    <nav class="hidden lg:flex gap-5 items-center">
+      <a class="text-xs font-medium text-white" href="#">Visual Reference</a>
+      <a class="text-xs font-medium text-on-surface-variant hover:text-white transition-colors" href="#">Pro Modifiers</a>
+      <a class="text-xs font-medium text-on-surface-variant hover:text-white transition-colors" href="#">Cinema Gear</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-2">
+    <button id="btn-download-all" class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant hover:bg-surface-bright transition-colors text-xs text-on-surface">
+      <span class="material-symbols-outlined text-sm">download</span>Download All
+    </button>
+    <button id="btn-inspire" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full gradient-primary text-on-primary-fixed font-bold text-xs shadow-[0_0_20px_rgba(182,160,255,0.25)] active:scale-95 transition-transform">
+      <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">auto_awesome</span>Inspire Me
+    </button>
+    <button id="btn-reset" class="flex items-center gap-1 px-3 py-1.5 rounded-full border border-outline-variant hover:bg-surface-bright transition-colors text-xs text-on-surface-variant">
+      <span class="material-symbols-outlined text-sm">refresh</span><span class="hidden md:inline">Reset</span>
+    </button>
+  </div>
+</header>
+
+<!-- ===== LEFT SIDEBAR ===== -->
+<aside id="sidebar" class="fixed left-0 top-16 h-[calc(100vh-64px)] w-80 bg-surface-container-low flex flex-col overflow-y-auto z-40">
+  <div class="px-5 py-3 border-b border-outline-variant/10">
+    <h2 class="font-headline font-bold text-sm text-white">Generation Lab</h2>
+    <p class="text-on-surface-variant text-[10px] uppercase tracking-widest">Neon Observatory v5.6</p>
+  </div>
+
+  <!-- API KEY -->
+  <div class="px-5 py-3 border-b border-outline-variant/10">
+    <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest block mb-1">Gemini API Key</label>
+    <input id="api-key" type="password" class="w-full bg-surface-container-highest border-none rounded text-xs text-on-surface focus:ring-1 focus:ring-primary py-2 px-3 placeholder-on-surface-variant/40" placeholder="AIza...">
+  </div>
+
+  <!-- VISUAL REFERENCE -->
+  <div class="px-5 py-3 border-b border-outline-variant/10">
+    <div class="flex items-center gap-2 text-primary mb-2">
+      <span class="material-symbols-outlined text-sm">image</span>
+      <span class="text-xs font-medium uppercase tracking-widest">Visual Reference</span>
+    </div>
+    <div id="upload-zone" class="border-2 border-dashed border-outline-variant rounded-xl p-4 flex flex-col items-center justify-center hover:bg-surface-container transition-colors cursor-pointer group relative min-h-[70px]">
+      <input id="ref-input" type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+      <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors text-2xl">cloud_upload</span>
+      <p id="upload-label" class="text-[10px] text-on-surface-variant text-center mt-1">ลากภาพ Face Match / Reference</p>
+    </div>
+    <button id="btn-decode" class="w-full mt-2 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary border border-primary/20 rounded hover:bg-primary/10 transition-colors">
+      ถอดรหัสรูปภาพ (Image Decoder)
+    </button>
+  </div>
+
+  <!-- ART STYLES & POSE -->
+  <div class="px-5 py-3 border-b border-outline-variant/10">
+    <div class="flex items-center gap-2 text-primary mb-2">
+      <span class="material-symbols-outlined text-sm">palette</span>
+      <span class="text-xs font-medium uppercase tracking-widest">Art Styles & Pose</span>
+    </div>
+    <div class="grid grid-cols-3 gap-1.5 mb-1.5">
+      <button class="preset-btn" data-group="style" data-val="Cinematic">Cinematic</button>
+      <button class="preset-btn" data-group="style" data-val="Cyberpunk">Cyberpunk</button>
+      <button class="preset-btn" data-group="style" data-val="Anime">Anime</button>
+      <button class="preset-btn" data-group="style" data-val="3D Render">3D Render</button>
+      <button class="preset-btn" data-group="style" data-val="Noir Film">Noir</button>
+      <button class="preset-btn" data-group="style" data-val="Watercolor">Watercolor</button>
+      <button class="preset-btn" data-group="style" data-val="Hyperrealistic">Hyperreal</button>
+      <button class="preset-btn" data-group="style" data-val="Sketch Art">Sketch</button>
+      <button class="preset-btn" data-group="style" data-val="Oil Painting">Oil Paint</button>
+      <button class="preset-btn" data-group="style" data-val="Neon Art">Neon</button>
+      <button class="preset-btn" data-group="style" data-val="Fantasy Digital Art">Fantasy</button>
+      <button class="preset-btn" data-group="style" data-val="Minimalist">Minimal</button>
+    </div>
+    <div class="grid grid-cols-3 gap-1.5">
+      <button class="preset-btn" data-group="pose" data-val="Standing pose, full body">Standing</button>
+      <button class="preset-btn" data-group="pose" data-val="Sitting pose">Sitting</button>
+      <button class="preset-btn" data-group="pose" data-val="Action pose dynamic">Action</button>
+      <button class="preset-btn" data-group="pose" data-val="Walking pose">Walking</button>
+      <button class="preset-btn" data-group="pose" data-val="Close-up portrait">Portrait</button>
+      <button class="preset-btn" data-group="pose" data-val="Back view pose">Back View</button>
+    </div>
+  </div>
+
+  <!-- CINEMA GEAR -->
+  <div class="px-5 py-3 border-b border-outline-variant/10">
+    <div class="flex items-center gap-2 text-primary mb-2">
+      <span class="material-symbols-outlined text-sm">movie_filter</span>
+      <span class="text-xs font-medium uppercase tracking-widest">Cinema Gear</span>
+    </div>
+    <div class="space-y-2">
+      <div>
+        <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Camera Body</label>
+        <select id="sel-camera" class="w-full mt-0.5 bg-surface-container-highest border-none rounded text-xs text-on-surface focus:ring-1 focus:ring-primary py-1.5 px-2">
+          <option value="">— None —</option>
+          <option>ARRI Alexa 35</option><option>RED V-Raptor</option><option>IMAX Film Camera</option>
+          <option>Sony A7R IV</option><option>Canon Cinema EOS</option><option>Blackmagic URSA</option>
+          <option>Hasselblad H6D</option><option>Classic 35mm Film</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Lens</label>
+        <select id="sel-lens" class="w-full mt-0.5 bg-surface-container-highest border-none rounded text-xs text-on-surface focus:ring-1 focus:ring-primary py-1.5 px-2">
+          <option value="">— None —</option>
+          <option>85mm f/1.2 Portrait</option><option>35mm f/1.4 G-Master</option>
+          <option>Anamorphic 40mm</option><option>50mm f/0.95 Noctilux</option>
+          <option>Fisheye 8mm</option><option>200mm f/2 Telephoto</option><option>24mm Wide Angle</option>
+        </select>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Angle</label>
+          <select id="sel-angle" class="w-full mt-0.5 bg-surface-container-highest border-none rounded text-xs text-on-surface focus:ring-1 focus:ring-primary py-1.5 px-2">
+            <option value="">— None —</option>
+            <option>Eye Level</option><option>Low Angle</option><option>Bird's Eye View</option>
+            <option>Dutch Angle</option><option>Drone Shot</option><option>Over Shoulder</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Lighting</label>
+          <select id="sel-lighting" class="w-full mt-0.5 bg-surface-container-highest border-none rounded text-xs text-on-surface focus:ring-1 focus:ring-primary py-1.5 px-2">
+            <option value="">— None —</option>
+            <option>Golden Hour</option><option>Cyberpunk Neon</option><option>Studio Softbox</option>
+            <option>Hard Rim Light</option><option>Volumetric Fog</option><option>Moonlight</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERATION SETTINGS -->
+  <div class="px-5 py-3 border-b border-outline-variant/10">
+    <div class="flex items-center gap-2 text-primary mb-2">
+      <span class="material-symbols-outlined text-sm">settings</span>
+      <span class="text-xs font-medium uppercase tracking-widest">Settings</span>
+    </div>
+    <div class="space-y-3">
+      <div>
+        <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">AI Engine</label>
+        <select id="sel-engine" class="w-full mt-0.5 bg-surface-container-highest border-none rounded text-xs text-on-surface focus:ring-1 focus:ring-primary py-1.5 px-2">
+          <option value="flash">⚡ Nano Banana 2.5 (Fast)</option>
+          <option value="imagen">✨ Nano Banana Pro (Quality)</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest block mb-1">Aspect Ratio</label>
+        <div class="flex gap-1" id="aspect-btns">
+          <button class="aspect-btn active" data-val="1:1"><div class="w-3 h-3 border border-current rounded-sm"></div><span class="text-[8px] font-bold">1:1</span></button>
+          <button class="aspect-btn" data-val="16:9"><div class="w-4 h-3 border border-current rounded-sm"></div><span class="text-[8px] font-bold text-on-surface-variant">16:9</span></button>
+          <button class="aspect-btn" data-val="9:16"><div class="w-3 h-4 border border-current rounded-sm"></div><span class="text-[8px] font-bold text-on-surface-variant">9:16</span></button>
+          <button class="aspect-btn" data-val="3:2"><div class="w-4 h-2.5 border border-current rounded-sm"></div><span class="text-[8px] font-bold text-on-surface-variant">3:2</span></button>
+          <button class="aspect-btn" data-val="21:9"><div class="w-5 h-2 border border-current rounded-sm"></div><span class="text-[8px] font-bold text-on-surface-variant">21:9</span></button>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Image Count</label>
+          <span id="batch-display" class="text-xs font-bold text-primary">4</span>
+        </div>
+        <input id="batch-count" type="range" min="1" max="8" value="4" class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary">
+      </div>
+    </div>
+  </div>
+
+  <!-- NATIVE PROMPT VIEW -->
+  <div class="px-5 py-3 border-b border-outline-variant/10">
+    <div class="flex justify-between items-center mb-1.5">
+      <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Native Prompt</label>
+      <button id="btn-copy-prompt" class="text-[10px] text-primary hover:text-primary-dim transition-colors">Copy</button>
+    </div>
+    <div id="native-prompt" class="bg-surface-container rounded-lg p-2.5 text-[10px] text-on-surface-variant min-h-[48px] leading-relaxed">—</div>
+  </div>
+
+  <!-- GENERATE BUTTON -->
+  <div class="mt-auto px-5 py-4">
+    <button id="btn-generate" class="w-full gradient-primary text-on-primary-fixed font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(182,160,255,0.2)] active:scale-95 transition-transform text-sm font-headline">
+      <span class="material-symbols-outlined">bolt</span> GENERATE IMAGE
+    </button>
+  </div>
+</aside>
+<!-- END SIDEBAR -->
+
+<!-- ===== MAIN CANVAS ===== -->
+<main id="main-canvas" class="ml-80 pt-16 h-screen flex flex-col bg-surface-dim overflow-y-auto">
+  <!-- Breadcrumb -->
+  <div class="flex items-center gap-3 px-8 pt-5 pb-3">
+    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container text-primary text-[10px] font-semibold border border-primary/20">
+      <span class="material-symbols-outlined text-xs" style="font-variation-settings:'FILL' 1">blur_on</span>Denoising
+    </div>
+    <div class="w-4 h-px bg-outline-variant"></div>
+    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant text-[10px] font-semibold">
+      <span class="material-symbols-outlined text-xs">auto_fix</span>Refinement
+    </div>
+    <div class="w-4 h-px bg-outline-variant"></div>
+    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant text-[10px] font-semibold">
+      <span class="material-symbols-outlined text-xs">palette</span>Color Grade
+    </div>
+    <div class="flex-1"></div>
+    <button id="btn-download-all-gallery" class="flex items-center gap-1 text-[10px] text-on-surface-variant hover:text-primary transition-colors">
+      <span class="material-symbols-outlined text-sm">folder_zip</span>Download ZIP
+    </button>
+  </div>
+  <!-- Gallery -->
+  <div id="gallery" class="px-8 grid grid-cols-12 gap-4 auto-rows-[220px] pb-36">
+    <div id="empty-state" class="col-span-12 flex flex-col items-center justify-center py-24 text-center">
+      <div class="relative mb-6">
+        <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+          <span class="material-symbols-outlined text-4xl text-primary/50" style="font-variation-settings:'FILL' 1">auto_awesome</span>
+        </div>
+        <div class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-primary/20 blur-md animate-pulse"></div>
+        <div class="absolute -bottom-1 -left-1 w-4 h-4 rounded-full bg-secondary/20 blur-sm animate-pulse"></div>
+      </div>
+      <h3 class="font-headline text-xl font-bold text-on-surface mb-2">พร้อมสร้างภาพ</h3>
+      <p class="text-on-surface-variant text-sm max-w-xs">ใส่ Prompt ภาษาไทยหรืออังกฤษ แล้วกด Generate หรือกด Inspire Me เพื่อรับไอเดีย</p>
+    </div>
+  </div>
+</main>
+
+<!-- ===== FLOATING PROMPT BAR ===== -->
+<div class="fixed bottom-6 z-30" style="left:calc(320px + 1.5rem);right:1.5rem">
+  <div class="glass-panel border border-outline-variant/30 rounded-full py-2 px-2 flex items-center shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+    <div class="flex-1 flex items-center px-4 gap-2">
+      <span class="material-symbols-outlined text-on-surface-variant/50 text-xl">edit</span>
+      <input id="prompt-input" type="text" class="w-full bg-transparent border-none focus:ring-0 text-on-surface placeholder-on-surface-variant/40 text-sm py-2" placeholder="อธิบายภาพที่คุณต้องการ (รองรับภาษาไทย)...">
+    </div>
+    <div class="flex items-center gap-1.5 pr-1">
+      <button id="btn-translate" title="แปลภาษาไทย → English" class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+        <span class="material-symbols-outlined text-sm">translate</span>
+      </button>
+      <button id="btn-generate-bar" class="gradient-primary text-on-primary-fixed px-5 py-2.5 rounded-full font-bold text-xs flex items-center gap-1.5 active:scale-95 transition-transform shadow-[0_0_15px_rgba(182,160,255,0.3)]">
+        <span>GENERATE</span><span class="material-symbols-outlined text-sm">rocket_launch</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOADING OVERLAY ===== -->
+<div id="loading-overlay" class="fixed inset-0 z-[200] bg-surface-container-lowest/95 backdrop-blur-sm flex items-center justify-center hidden">
+  <div class="text-center max-w-sm px-8 w-full">
+    <div class="relative mb-10 flex justify-center">
+      <div class="h-28 w-28 rounded-full border-2 border-primary/20 border-t-primary animate-spin-slow"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="h-18 w-18 rounded-full border border-secondary/30 border-b-secondary" style="width:4.5rem;height:4.5rem;animation:spin-slow 1.5s linear infinite reverse"></div>
+        <div class="absolute text-primary font-bold font-headline animate-pulse">AI</div>
+      </div>
+      <div class="absolute -top-3 -right-3 h-8 w-8 rounded-full bg-primary/20 blur-xl animate-pulse"></div>
+      <div class="absolute -bottom-2 -left-2 h-6 w-6 rounded-full bg-secondary/20 blur-lg animate-pulse" style="animation-delay:.7s"></div>
+    </div>
+    <h2 class="font-headline text-2xl font-extrabold text-white mb-2">Processing...</h2>
+    <p class="text-on-surface-variant text-xs mb-6" id="loading-msg">AI กำลังสร้างภาพของคุณ...</p>
+    <div class="space-y-2 w-full">
+      <div class="flex justify-between items-end">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-primary" id="loading-stage">Diffusion Stage</span>
+        <span class="font-headline text-lg font-bold text-white" id="progress-pct">0%</span>
+      </div>
+      <div class="h-1.5 w-full bg-surface-variant rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full bg-gradient-to-r from-primary to-secondary relative transition-all duration-500" style="width:0%">
+          <div class="absolute inset-0 shimmer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== POST-PROCESSING MODAL ===== -->
+<div id="modal-post" class="fixed inset-0 z-[150] bg-surface-container-lowest flex-col hidden">
+  <!-- Post nav -->
+  <nav class="flex justify-between items-center px-6 h-16 bg-[#0e0e0e]/80 backdrop-blur-xl border-b border-[#b6a0ff]/10 flex-shrink-0">
+    <div class="flex items-center gap-3">
+      <span class="font-headline font-bold text-sm bg-gradient-to-br from-violet-300 to-violet-600 bg-clip-text text-transparent">Neon Observatory</span>
+      <div class="h-4 w-px bg-outline-variant/30"></div>
+      <span class="text-on-surface-variant text-xs uppercase tracking-widest">Post-Processing</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="seed-display" class="text-[10px] text-on-surface-variant/50 font-mono hidden"></span>
+      <div id="hud-4k" class="hidden items-center gap-1 px-2 py-1 bg-tertiary/10 rounded-full border border-tertiary/30">
+        <span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+        <span class="text-[10px] font-bold text-tertiary uppercase">4K Upscaled</span>
+      </div>
+      <button id="btn-close-post" class="text-on-surface-variant hover:text-white p-2 hover:bg-surface-bright rounded-lg transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+  </nav>
+  <!-- Post body -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Center canvas -->
+    <div class="flex-1 relative flex items-center justify-center bg-surface-dim p-8" style="margin-right:320px;margin-bottom:72px">
+      <button id="btn-post-prev" class="absolute left-4 z-10 p-3 rounded-full bg-surface-container/50 hover:bg-surface-container-high text-on-surface-variant hover:text-primary transition-all active:scale-90">
+        <span class="material-symbols-outlined text-3xl">chevron_left</span>
+      </button>
+      <div class="relative max-w-5xl w-full">
+        <div id="post-img-wrap" class="rounded-xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.9)] relative">
+          <img id="post-image" class="w-full object-contain" style="max-height:72vh" src="" alt="">
+          <canvas id="text-canvas" class="absolute inset-0 w-full h-full cursor-crosshair pointer-events-auto" style="touch-action:none"></canvas>
+        </div>
+        <div class="absolute top-4 left-4 flex gap-2">
+          <div class="px-2 py-1 bg-black/50 backdrop-blur-sm rounded-lg border border-primary/20 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+            <span class="text-[10px] font-bold uppercase" id="post-index-label">1 / 1</span>
+          </div>
+        </div>
+      </div>
+      <button id="btn-post-next" class="absolute right-4 z-10 p-3 rounded-full bg-surface-container/50 hover:bg-surface-container-high text-on-surface-variant hover:text-primary transition-all active:scale-90">
+        <span class="material-symbols-outlined text-3xl">chevron_right</span>
+      </button>
+    </div>
+    <!-- Typography Studio sidebar -->
+    <aside id="typo-sidebar" class="fixed right-0 top-16 bg-[#131313] flex flex-col border-l border-[#b6a0ff]/10 shadow-[-10px_0_30px_rgba(0,0,0,0.4)]" style="width:320px;height:calc(100vh - 64px - 72px)">
+      <div class="p-5 border-b border-outline-variant/15">
+        <h3 class="text-white font-black text-xs uppercase tracking-wider">Typography Studio</h3>
+        <p class="text-on-surface-variant text-[10px]">Post-Processing</p>
+      </div>
+      <div class="flex border-b border-outline-variant/10 flex-shrink-0">
+        <button class="typo-tab flex-1 py-3 flex flex-col items-center gap-0.5 border-r-2 border-primary text-white bg-surface-container-high" data-tab="font">
+          <span class="material-symbols-outlined text-sm">match_case</span><span class="text-[9px] font-bold uppercase">Font</span>
+        </button>
+        <button class="typo-tab flex-1 py-3 flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors" data-tab="color">
+          <span class="material-symbols-outlined text-sm">palette</span><span class="text-[9px] uppercase">Color</span>
+        </button>
+        <button class="typo-tab flex-1 py-3 flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors" data-tab="size">
+          <span class="material-symbols-outlined text-sm">format_size</span><span class="text-[9px] uppercase">Size</span>
+        </button>
+        <button class="typo-tab flex-1 py-3 flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors" data-tab="align">
+          <span class="material-symbols-outlined text-sm">format_align_center</span><span class="text-[9px] uppercase">Align</span>
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto p-5 space-y-4">
+        <div class="space-y-1">
+          <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Text</label>
+          <textarea id="typo-text" class="w-full bg-surface-container-highest border-none rounded-lg text-on-surface p-3 text-base min-h-[80px] focus:ring-1 focus:ring-primary" placeholder="พิมพ์ข้อความ..."></textarea>
+        </div>
+        <div class="space-y-1">
+          <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Thai Font</label>
+          <select id="typo-font" class="w-full bg-surface-container-highest border-none rounded text-xs text-on-surface focus:ring-1 focus:ring-primary py-2 px-2">
+            <option value="Kanit">Kanit</option><option value="Sarabun">Sarabun</option>
+            <option value="Prompt">Prompt</option><option value="Mitr">Mitr</option>
+            <option value="Itim">Itim</option><option value="Pridi">Pridi</option>
+            <option value="Taviraj">Taviraj</option><option value="Krub">Krub</option>
+            <option value="Manrope">Manrope</option><option value="Inter">Inter</option>
+          </select>
+        </div>
+        <div class="space-y-1">
+          <div class="flex justify-between">
+            <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Font Size</label>
+            <span id="typo-size-val" class="text-[10px] text-primary font-mono">64px</span>
+          </div>
+          <input id="typo-size" type="range" min="12" max="200" value="64" class="w-full h-1 bg-surface-variant rounded-full appearance-none cursor-pointer accent-primary">
+        </div>
+        <div class="space-y-1">
+          <div class="flex justify-between">
+            <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Line Height</label>
+            <span id="typo-lh-val" class="text-[10px] text-primary font-mono">1.4</span>
+          </div>
+          <input id="typo-lh" type="range" min="1" max="3" step="0.1" value="1.4" class="w-full h-1 bg-surface-variant rounded-full appearance-none cursor-pointer accent-primary">
+        </div>
+        <div class="space-y-1">
+          <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Color</label>
+          <div class="flex gap-2 flex-wrap items-center">
+            <button class="typo-color w-7 h-7 rounded-full ring-2 ring-primary ring-offset-1 ring-offset-[#131313]" style="background:#fff" data-color="#ffffff"></button>
+            <button class="typo-color w-7 h-7 rounded-full" style="background:#b6a0ff" data-color="#b6a0ff"></button>
+            <button class="typo-color w-7 h-7 rounded-full" style="background:#ff97b8" data-color="#ff97b8"></button>
+            <button class="typo-color w-7 h-7 rounded-full" style="background:#c492fe" data-color="#c492fe"></button>
+            <button class="typo-color w-7 h-7 rounded-full border border-outline-variant" style="background:#000" data-color="#000000"></button>
+            <input type="color" id="typo-color-pick" value="#ffffff" class="w-7 h-7 rounded-full cursor-pointer border-none p-0 bg-transparent">
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Alignment</label>
+          <div class="flex gap-1 bg-surface-container-high p-1 rounded-lg">
+            <button class="typo-align flex-1 py-1.5 rounded flex justify-center hover:bg-surface-bright transition-colors" data-align="left"><span class="material-symbols-outlined text-sm">format_align_left</span></button>
+            <button class="typo-align flex-1 py-1.5 rounded flex justify-center bg-surface-bright" data-align="center"><span class="material-symbols-outlined text-sm text-primary">format_align_center</span></button>
+            <button class="typo-align flex-1 py-1.5 rounded flex justify-center hover:bg-surface-bright transition-colors" data-align="right"><span class="material-symbols-outlined text-sm">format_align_right</span></button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between pt-1">
+          <span class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Text Shadow</span>
+          <button id="typo-shadow" class="w-10 h-5 rounded-full relative p-0.5 transition-all bg-surface-variant" data-on="false">
+            <div class="w-4 h-4 rounded-full bg-on-surface-variant transition-all duration-200" style="margin-left:0"></div>
+          </button>
+        </div>
+        <p class="text-[10px] text-on-surface-variant/50">Drag text on image to reposition</p>
+      </div>
+      <div class="p-4 border-t border-outline-variant/10 bg-surface-container">
+        <button id="btn-render-typo" class="w-full py-2.5 rounded-full text-on-primary-fixed font-bold text-xs hover:brightness-110 active:scale-95 transition-all" style="background:linear-gradient(135deg,#b6a0ff,#7e51ff)">
+          Apply Typography
+        </button>
+      </div>
+    </aside>
+  </div>
+  <!-- Post bottom toolbar -->
+  <nav class="fixed bottom-0 left-0 w-full z-[160] rounded-t-xl bg-[#131313]/90 backdrop-blur-2xl border-t border-[#b6a0ff]/15 shadow-[0_-8px_32px_rgba(0,0,0,0.5)] flex justify-around items-center px-4 py-2.5">
+    <button id="btn-magic-edit" class="flex flex-col items-center gap-0.5 text-on-surface-variant p-2 hover:text-white hover:bg-surface-container-high rounded-lg active:scale-90 transition-all">
+      <span class="material-symbols-outlined text-xl">magic_button</span><span class="text-[9px] uppercase font-bold">Magic Edit</span>
+    </button>
+    <button id="btn-toggle-typo" class="flex flex-col items-center gap-0.5 text-on-surface-variant p-2 hover:text-white hover:bg-surface-container-high rounded-lg active:scale-90 transition-all">
+      <span class="material-symbols-outlined text-xl">title</span><span class="text-[9px] uppercase font-bold">Typography</span>
+    </button>
+    <button id="btn-upscale" class="flex flex-col items-center gap-0.5 text-on-surface-variant p-2 hover:text-white hover:bg-surface-container-high rounded-lg active:scale-90 transition-all">
+      <span class="material-symbols-outlined text-xl">high_quality</span><span class="text-[9px] uppercase font-bold">Upscale 4K</span>
+    </button>
+    <button id="btn-develop" class="flex flex-col items-center gap-0.5 text-on-surface-variant p-2 hover:text-white hover:bg-surface-container-high rounded-lg active:scale-90 transition-all">
+      <span class="material-symbols-outlined text-xl">tune</span><span class="text-[9px] uppercase font-bold">Develop</span>
+    </button>
+    <button id="btn-quick-169" class="flex flex-col items-center gap-0.5 text-on-surface-variant p-2 hover:text-white hover:bg-surface-container-high rounded-lg active:scale-90 transition-all">
+      <span class="material-symbols-outlined text-xl">aspect_ratio</span><span class="text-[9px] uppercase font-bold">16:9</span>
+    </button>
+    <button id="btn-export-text" class="flex flex-col items-center gap-0.5 text-on-primary-fixed p-2 rounded-lg active:scale-90 transition-all shadow-[0_0_10px_rgba(182,160,255,0.3)]" style="background:linear-gradient(135deg,#b6a0ff,#7e51ff)">
+      <span class="material-symbols-outlined text-xl">ios_share</span><span class="text-[9px] uppercase font-bold">Export</span>
+    </button>
+    <button id="btn-dl-single" class="flex flex-col items-center gap-0.5 text-on-surface-variant p-2 hover:text-white hover:bg-surface-container-high rounded-lg active:scale-90 transition-all">
+      <span class="material-symbols-outlined text-xl">download</span><span class="text-[9px] uppercase font-bold">Save</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ===== MAGIC EDIT MODAL ===== -->
+<div id="modal-magic-edit" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 hidden">
+  <div class="w-full max-w-lg glass-panel p-8 rounded-2xl shadow-[0_32px_64px_rgba(0,0,0,0.7)] border border-white/5">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60">Active Process</span>
+      <div class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest">
+        <span class="text-on-surface-variant/40">Selection</span>
+        <span class="material-symbols-outlined text-xs text-on-surface-variant/30">chevron_right</span>
+        <span class="text-primary text-neon-glow">Refinement</span>
+        <span class="material-symbols-outlined text-xs text-on-surface-variant/30">chevron_right</span>
+        <span class="text-on-surface-variant/40">Synthesis</span>
+      </div>
+    </div>
+    <h2 class="font-headline text-2xl font-extrabold bg-gradient-to-r from-white via-primary to-violet-400 bg-clip-text text-transparent text-neon-glow">Magic Edit</h2>
+    <p class="text-on-surface-variant text-xs mt-1 mb-5">พิมพ์คำสั่งภาษาไทยเพื่อแก้ไของค์ประกอบในภาพ</p>
+    <div class="relative group">
+      <div class="absolute top-4 left-4 pointer-events-none">
+        <span class="material-symbols-outlined text-on-surface-variant/40 group-focus-within:text-primary transition-colors">auto_fix_normal</span>
+      </div>
+      <textarea id="magic-edit-prompt" class="w-full bg-neutral-900/80 border border-white/5 focus:border-primary/50 focus:ring-2 focus:ring-primary/10 rounded-xl pl-12 pr-4 py-4 text-sm text-white placeholder-on-surface-variant/40 resize-none h-28 transition-all" placeholder="เช่น เปลี่ยนพื้นหลังเป็นเมืองไซเบอร์พังค์, ใส่แว่นนีออน, เพิ่มแสง golden hour..."></textarea>
+    </div>
+    <div class="mt-3 mb-6">
+      <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/40 mb-2">Quick Suggestions</p>
+      <div class="flex flex-wrap gap-1.5">
+        <button class="magic-chip px-3 py-1 rounded-full bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-primary/5 text-[10px] text-on-surface-variant hover:text-primary transition-all">Cyberpunk background</button>
+        <button class="magic-chip px-3 py-1 rounded-full bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-primary/5 text-[10px] text-on-surface-variant hover:text-primary transition-all">Add neon effects</button>
+        <button class="magic-chip px-3 py-1 rounded-full bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-primary/5 text-[10px] text-on-surface-variant hover:text-primary transition-all">Golden hour light</button>
+        <button class="magic-chip px-3 py-1 rounded-full bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-primary/5 text-[10px] text-on-surface-variant hover:text-primary transition-all">Black & white film</button>
+        <button class="magic-chip px-3 py-1 rounded-full bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-primary/5 text-[10px] text-on-surface-variant hover:text-primary transition-all">Rain & reflections</button>
+      </div>
+    </div>
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-1.5 text-on-surface-variant/30">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">terminal</span>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Gemini Flash Engine</span>
+      </div>
+      <div class="flex gap-2">
+        <button id="btn-cancel-magic" class="px-5 py-2 rounded-lg text-sm text-on-surface-variant hover:text-white hover:bg-white/5 transition-all">Cancel</button>
+        <button id="btn-apply-magic" class="px-6 py-2 rounded-lg text-sm font-extrabold text-on-primary-fixed hover:brightness-110 active:scale-95 transition-all flex items-center gap-1.5" style="background:linear-gradient(135deg,#b6a0ff,#7e51ff)">
+          Apply <span class="material-symbols-outlined text-base">bolt</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESET MODAL ===== -->
+<div id="modal-reset" class="fixed inset-0 z-[400] bg-neutral-950/90 backdrop-blur-sm flex items-center justify-center p-6 hidden">
+  <div class="bg-surface-container w-full max-w-sm rounded-xl shadow-[0_48px_64px_-12px_rgba(0,0,0,0.9)] border border-outline-variant/15 p-8 text-center">
+    <div class="w-14 h-14 bg-error/10 text-error rounded-full flex items-center justify-center mx-auto mb-5">
+      <span class="material-symbols-outlined text-3xl">restart_alt</span>
+    </div>
+    <h2 class="font-headline text-xl font-extrabold text-white mb-2">Reset Workspace?</h2>
+    <p class="text-on-surface-variant text-xs leading-relaxed mb-6">การรีเซ็ตจะล้างภาพทั้งหมด, Prompt, และการตั้งค่าทุกอย่าง ไม่สามารถย้อนกลับได้</p>
+    <div class="flex gap-3">
+      <button id="btn-confirm-reset" class="flex-1 py-3 bg-error text-on-error font-bold rounded-full text-sm active:scale-95 transition-transform">Reset</button>
+      <button id="btn-cancel-reset" class="flex-1 py-3 bg-surface-container-highest font-bold rounded-full text-sm hover:bg-surface-bright transition-colors">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div id="toast-container" class="fixed top-20 right-5 z-[500] flex flex-col gap-2 pointer-events-none"></div>
+
+<script>
+// ===== CONFIG =====
+const API_BASE='https://generativelanguage.googleapis.com/v1beta';
+const MODELS={text:'gemini-2.5-flash-preview-04-17',flash:'gemini-2.5-flash-preview-04-17',imagen:'imagen-4.0-generate-001'};
+const SAFETY=[{category:'HARM_CATEGORY_HARASSMENT',threshold:'BLOCK_ONLY_HIGH'},{category:'HARM_CATEGORY_HATE_SPEECH',threshold:'BLOCK_ONLY_HIGH'},{category:'HARM_CATEGORY_SEXUALLY_EXPLICIT',threshold:'BLOCK_ONLY_HIGH'},{category:'HARM_CATEGORY_DANGEROUS_CONTENT',threshold:'BLOCK_ONLY_HIGH'}];
+
+// ===== STATE =====
+const S={images:[],curIdx:0,refBase64:null,refMime:null,styles:new Set(),poses:new Set(),aspect:'1:1',busy:false,
+  typo:{text:'',font:'Kanit',size:64,color:'#ffffff',align:'center',shadow:false,lh:1.4,x:0.5,y:0.5},typoActive:false};
+
+// ===== UTILS =====
+const $=id=>document.getElementById(id);
+const apiKey=()=>$('api-key').value.trim();
+
+function showToast(msg,type='success'){
+  const c=$('toast-container'),ok=type==='success';
+  const t=document.createElement('div');
+  t.style.pointerEvents='auto';
+  t.className=`glass-panel px-4 py-3 rounded-lg flex items-center gap-3 border-l-4 shadow-2xl max-w-xs ${ok?'border-primary':'border-error'}`;
+  t.innerHTML=`<div class="p-1.5 rounded-full ${ok?'bg-primary/20':'bg-error/20'}"><span class="material-symbols-outlined text-sm ${ok?'text-primary':'text-error'}" style="font-variation-settings:'FILL' 1">${ok?'check_circle':'error'}</span></div><p class="text-xs text-on-surface flex-1">${msg}</p><span class="material-symbols-outlined text-on-surface-variant cursor-pointer text-base hover:text-white" onclick="this.closest('div').remove()">close</span>`;
+  c.appendChild(t);setTimeout(()=>t.remove(),4500);
+}
+
+function setBusy(b){
+  S.busy=b;
+  const g=$('btn-generate'),bar=$('btn-generate-bar');
+  if(g){g.disabled=b;g.innerHTML=b?`<span class="material-symbols-outlined animate-spin-slow">sync</span><span>Generating...</span>`:`<span class="material-symbols-outlined">bolt</span> GENERATE IMAGE`;
+    if(b){g.style.background='#262626';g.style.removeProperty('background-image')}else{g.style.cssText='background:linear-gradient(135deg,#b6a0ff,#7e51ff)';}}
+  if(bar)bar.disabled=b;
+}
+
+function showLoading(show,msg='AI กำลังสร้างภาพ...'){
+  $('loading-overlay').classList.toggle('hidden',!show);
+  $('loading-msg').textContent=msg;
+  if(show){$('progress-bar').style.width='0%';$('progress-pct').textContent='0%';}
+}
+
+let _progTimer=null;
+function animateProgress(to,dur=2000){
+  clearInterval(_progTimer);
+  const bar=$('progress-bar'),pct=$('progress-pct');
+  let cur=parseFloat(bar.style.width)||0;
+  const steps=Math.ceil(dur/50),inc=(to-cur)/steps;
+  _progTimer=setInterval(()=>{cur=Math.min(cur+inc,to);bar.style.width=cur+'%';pct.textContent=Math.round(cur)+'%';if(cur>=to)clearInterval(_progTimer);},50);
+}
+
+function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});}
+
+// ===== PROMPT ASSEMBLY =====
+function assemblePrompt(base){
+  const parts=[base];
+  if(S.styles.size)parts.push([...S.styles].join(', ')+' style');
+  if(S.poses.size)parts.push([...S.poses].join(', '));
+  const cam=$('sel-camera').value,lens=$('sel-lens').value,angle=$('sel-angle').value,light=$('sel-lighting').value;
+  if(cam)parts.push('shot on '+cam);if(lens)parts.push(lens+' lens');
+  if(angle)parts.push(angle+' camera angle');if(light)parts.push(light+' lighting');
+  parts.push('masterpiece, high quality, ultra detailed, professional photography');
+  return parts.filter(Boolean).join(', ');
+}
+function updateNativePrompt(t){$('native-prompt').textContent=t||'—';}
+
+// ===== API =====
+async function callText(prompt){
+  const k=apiKey();if(!k)throw new Error('กรุณาใส่ API Key');
+  const r=await fetch(`${API_BASE}/models/${MODELS.text}:generateContent?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],safetySettings:SAFETY})});
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||`HTTP ${r.status}`);}
+  const d=await r.json();return d.candidates?.[0]?.content?.parts?.[0]?.text?.trim()||'';
+}
+
+async function translateTH(thai){
+  return callText(`Translate Thai to English image generation prompt. Output only the English prompt, nothing else.\nThai: ${thai}`);
+}
+
+async function inspireMe(){
+  const themes=['cyberpunk portrait','cinematic fantasy','abstract neon art','sci-fi landscape','anime character','dark noir detective','surreal dreamscape','3D rendered environment'];
+  const t=themes[Math.floor(Math.random()*themes.length)];
+  return callText(`สร้าง image prompt ภาษาไทยสวยงามสไตล์ ${t} 1 ประโยคสั้นๆ ไม่เกิน 30 คำ ห้ามอธิบายเพิ่มเติม`);
+}
+
+async function genFlash(prompt,refBase,refMime){
+  const k=apiKey();if(!k)throw new Error('กรุณาใส่ API Key');
+  const parts=[];
+  if(refBase)parts.push({inlineData:{mimeType:refMime||'image/jpeg',data:refBase}});
+  parts.push({text:prompt});
+  const r=await fetch(`${API_BASE}/models/${MODELS.flash}:generateContent?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts}],generationConfig:{responseModalities:['IMAGE','TEXT']},safetySettings:SAFETY})});
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||`HTTP ${r.status}`);}
+  const d=await r.json();
+  const p=d.candidates?.[0]?.content?.parts?.find(p=>p.inlineData);
+  if(!p)throw new Error('AI ไม่ส่งภาพกลับมา — ลองใหม่อีกครั้ง');
+  return`data:image/png;base64,${p.inlineData.data}`;
+}
+
+async function genImagen(prompt,aspect,count){
+  const k=apiKey();if(!k)throw new Error('กรุณาใส่ API Key');
+  const r=await fetch(`${API_BASE}/models/${MODELS.imagen}:predict?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({instances:[{prompt}],parameters:{sampleCount:Math.min(count,4),aspectRatio:aspect}})});
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||`HTTP ${r.status}`);}
+  const d=await r.json();
+  if(!d.predictions?.length)throw new Error('Imagen ไม่ส่งภาพกลับมา');
+  return d.predictions.map(p=>`data:image/png;base64,${p.bytesBase64Encoded}`);
+}
+
+// ===== GALLERY =====
+const PATTERNS=['col-span-8 row-span-2','col-span-4 row-span-1','col-span-4 row-span-1','col-span-4 row-span-2','col-span-8 row-span-1','col-span-6 row-span-2','col-span-6 row-span-1','col-span-6 row-span-1'];
+
+function renderGallery(){
+  const g=$('gallery');
+  [...g.children].forEach(c=>{if(c.id!=='empty-state')c.remove();});
+  $('empty-state').classList.toggle('hidden',S.images.length>0);
+  S.images.forEach((img,i)=>{
+    const p=PATTERNS[i%PATTERNS.length];
+    const div=document.createElement('div');
+    div.className=`${p} relative group overflow-hidden rounded-xl bg-surface-container cursor-pointer`;
+    div.innerHTML=`<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="${img.dataUrl}" loading="lazy" alt="AI Generated">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end">
+<div class="flex gap-1.5 mb-2 flex-wrap">${i===0?'<span class="px-2 py-0.5 rounded bg-secondary/20 text-secondary text-[9px] font-bold uppercase">Latest</span>':''}${img.isUpscaled?'<span class="px-2 py-0.5 rounded bg-tertiary/20 text-tertiary text-[9px] font-bold uppercase">4K</span>':''}</div>
+<p class="text-white text-xs line-clamp-2 leading-relaxed">${img.prompt.substring(0,120)}</p></div>
+<div class="absolute inset-0 border-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity rounded-xl pointer-events-none"></div>
+<button class="dl-btn absolute top-2 right-2 w-7 h-7 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-primary transition-all" data-idx="${i}"><span class="material-symbols-outlined text-sm">download</span></button>`;
+    div.addEventListener('click',(e)=>{if(!e.target.closest('.dl-btn'))openPost(i);});
+    div.querySelector('.dl-btn').addEventListener('click',e=>{e.stopPropagation();downloadSingle(i);});
+    g.appendChild(div);
+  });
+}
+
+// ===== GENERATE =====
+async function handleGenerate(){
+  if(S.busy)return;
+  if(!apiKey()){showToast('กรุณาใส่ Gemini API Key ก่อน','error');return;}
+  const raw=$('prompt-input').value.trim();
+  if(!raw){showToast('กรุณาใส่ Prompt ก่อน','error');return;}
+  setBusy(true);showLoading(true);animateProgress(25,1500);
+  try{
+    let eng=raw;
+    if(/[\u0E00-\u0E7F]/.test(raw)){showLoading(true,'กำลังแปลภาษา...');animateProgress(35,800);eng=await translateTH(raw);}
+    const final=assemblePrompt(eng);updateNativePrompt(final);
+    const engine=$('sel-engine').value,count=parseInt($('batch-count').value)||4;
+    animateProgress(60,2000);showLoading(true,'AI กำลังสร้างภาพของคุณ...');
+    let imgs=[];
+    if(engine==='imagen'){imgs=await genImagen(final,S.aspect,count);animateProgress(95,500);}
+    else{for(let i=0;i<count;i++){imgs.push(await genFlash(final,S.refBase64,S.refMime));animateProgress(60+(i+1)/count*35,400);}}
+    animateProgress(100,200);
+    setTimeout(()=>{
+      imgs.forEach(d=>S.images.unshift({dataUrl:d,prompt:final,isUpscaled:false,seed:Date.now()}));
+      renderGallery();showLoading(false);setBusy(false);showToast(`สร้างภาพสำเร็จ ${imgs.length} ภาพ`);
+    },400);
+  }catch(err){console.error(err);showToast(err.message,'error');showLoading(false);setBusy(false);}
+}
+
+// ===== POST PROCESSING =====
+function openPost(idx){
+  S.curIdx=idx;$('modal-post').classList.remove('hidden');$('modal-post').style.display='flex';
+  $('modal-post').style.flexDirection='column';
+  renderPost();
+}
+function closePost(){$('modal-post').classList.add('hidden');$('modal-post').style.display='none';clearCanvas();}
+
+function renderPost(){
+  const img=S.images[S.curIdx];if(!img)return;
+  $('post-image').src=img.dataUrl;
+  $('post-index-label').textContent=`${S.curIdx+1} / ${S.images.length}`;
+  const hud=$('hud-4k');if(hud){hud.style.display=img.isUpscaled?'flex':'none';}
+  clearCanvas();if(S.typoActive)renderTypoCanvas();
+}
+
+// ===== CANVAS TYPOGRAPHY =====
+let isDragging=false,dragOffX=0,dragOffY=0;
+function clearCanvas(){const c=$('text-canvas');if(c){const ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);}}
+
+function renderTypoCanvas(){
+  const canvas=$('text-canvas'),img=$('post-image');
+  canvas.width=img.clientWidth;canvas.height=img.clientHeight;
+  const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);
+  const t=S.typo;if(!t.text.trim())return;
+  ctx.font=`${t.size}px "${t.font}"`;ctx.fillStyle=t.color;ctx.textAlign=t.align;
+  if(t.shadow){ctx.shadowColor='rgba(0,0,0,0.9)';ctx.shadowBlur=16;ctx.shadowOffsetX=2;ctx.shadowOffsetY=2;}
+  else{ctx.shadowColor='transparent';ctx.shadowBlur=0;}
+  const x=t.x*canvas.width,y=t.y*canvas.height,lh=t.size*t.lh;
+  t.text.split('\n').forEach((line,i)=>ctx.fillText(line,x,y+i*lh));
+}
+
+function setupCanvasDrag(){
+  const c=$('text-canvas');if(!c)return;
+  c.onmousedown=e=>{isDragging=true;const r=c.getBoundingClientRect();dragOffX=e.clientX-r.left-S.typo.x*c.width;dragOffY=e.clientY-r.top-S.typo.y*c.height;};
+  c.onmousemove=e=>{if(!isDragging)return;const r=c.getBoundingClientRect();S.typo.x=(e.clientX-r.left-dragOffX)/c.width;S.typo.y=(e.clientY-r.top-dragOffY)/c.height;S.typo.x=Math.max(0,Math.min(1,S.typo.x));S.typo.y=Math.max(0,Math.min(1,S.typo.y));if(S.typoActive)renderTypoCanvas();};
+  c.onmouseup=()=>isDragging=false;c.onmouseleave=()=>isDragging=false;
+}
+
+// ===== MAGIC EDIT =====
+async function applyMagicEdit(){
+  const prompt=$('magic-edit-prompt').value.trim();if(!prompt){showToast('กรุณาใส่คำสั่ง','error');return;}
+  if(!apiKey()){showToast('กรุณาใส่ API Key','error');return;}
+  $('btn-apply-magic').disabled=true;
+  showLoading(true,'กำลังแก้ไขภาพ...');animateProgress(50,3000);
+  try{
+    const img=S.images[S.curIdx];
+    let engPrompt=prompt;
+    if(/[\u0E00-\u0E7F]/.test(prompt))engPrompt=await translateTH(prompt);
+    const editPrompt=`Edit this image: ${engPrompt}. Keep the composition but apply the changes precisely.`;
+    const base=img.dataUrl.split(',')[1];
+    const newUrl=await genFlash(editPrompt,base,'image/png');
+    animateProgress(100,200);
+    setTimeout(()=>{
+      S.images[S.curIdx]={...img,dataUrl:newUrl,prompt:editPrompt};
+      renderPost();renderGallery();
+      $('modal-magic-edit').classList.add('hidden');
+      showLoading(false);showToast('แก้ไขภาพสำเร็จ!');
+    },400);
+  }catch(err){showToast(err.message,'error');showLoading(false);}
+  finally{$('btn-apply-magic').disabled=false;}
+}
+
+// ===== UPSCALE =====
+async function upscale4K(){
+  if(!apiKey()){showToast('กรุณาใส่ API Key','error');return;}
+  showLoading(true,'กำลัง Upscale 4K...');animateProgress(60,4000);
+  try{
+    const img=S.images[S.curIdx];
+    const base=img.dataUrl.split(',')[1];
+    const newUrl=await genFlash('Upscale this image to 4K. Enhance details, sharpness, clarity, add micro-textures. Keep exact same composition and artistic style.',base,'image/png');
+    animateProgress(100,300);
+    setTimeout(()=>{S.images[S.curIdx]={...img,dataUrl:newUrl,isUpscaled:true};renderPost();renderGallery();showLoading(false);showToast('Upscale 4K สำเร็จ!');},400);
+  }catch(err){showToast(err.message,'error');showLoading(false);}
+}
+
+// ===== DEVELOP =====
+function develop(){
+  const img=S.images[S.curIdx];if(!img)return;
+  S.refBase64=img.dataUrl.split(',')[1];S.refMime='image/png';
+  $('upload-label').textContent='Reference: Post-processed image';
+  closePost();showToast('ตั้งภาพเป็น Reference แล้ว ใส่ Prompt ใหม่แล้ว Generate');
+}
+
+// ===== QUICK 16:9 =====
+async function quick169(){
+  if(!apiKey()){showToast('กรุณาใส่ API Key','error');return;}
+  const img=S.images[S.curIdx];if(!img)return;
+  showLoading(true,'กำลัง Generate 16:9...');animateProgress(50,3000);
+  try{
+    const newUrl=await genImagen(img.prompt,'16:9',1);
+    animateProgress(100,200);
+    setTimeout(()=>{S.images.unshift({dataUrl:newUrl[0],prompt:img.prompt+', 16:9 aspect ratio',isUpscaled:false,seed:Date.now()});renderGallery();closePost();showLoading(false);showToast('Generate 16:9 สำเร็จ!');},400);
+  }catch(err){
+    // Fallback to flash
+    try{const b=img.dataUrl.split(',')[1];const u=await genFlash('Recreate this exact image in 16:9 widescreen format. Keep all details, style and composition.',b,'image/png');animateProgress(100,200);setTimeout(()=>{S.images.unshift({dataUrl:u,prompt:img.prompt,isUpscaled:false,seed:Date.now()});renderGallery();closePost();showLoading(false);showToast('Generate 16:9 สำเร็จ!');},400);}
+    catch(e2){showToast(e2.message,'error');showLoading(false);}
+  }
+}
+
+// ===== EXPORT WITH TEXT =====
+async function exportWithText(){
+  const img=$('post-image');const canvas=document.createElement('canvas');
+  canvas.width=img.naturalWidth||img.clientWidth;canvas.height=img.naturalHeight||img.clientHeight;
+  const ctx=canvas.getContext('2d');
+  const bmp=await createImageBitmap(await(await fetch($('post-image').src)).blob());
+  ctx.drawImage(bmp,0,0,canvas.width,canvas.height);
+  const t=S.typo;
+  if(t.text.trim()){
+    const scale=canvas.width/img.clientWidth;
+    ctx.font=`${t.size*scale}px "${t.font}"`;ctx.fillStyle=t.color;ctx.textAlign=t.align;
+    if(t.shadow){ctx.shadowColor='rgba(0,0,0,0.9)';ctx.shadowBlur=20*scale;}
+    const x=t.x*canvas.width,y=t.y*canvas.height,lh=t.size*t.lh*scale;
+    t.text.split('\n').forEach((line,i)=>ctx.fillText(line,x,y+i*lh));
+  }
+  const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download=`ai-studio-export-${Date.now()}.png`;a.click();
+  showToast('Export with Text สำเร็จ!');
+}
+
+function downloadSingle(idx){
+  const img=S.images[idx];if(!img)return;
+  const a=document.createElement('a');a.href=img.dataUrl;a.download=`ai-studio-${idx+1}-${Date.now()}.png`;a.click();
+}
+
+async function downloadAll(){
+  if(!S.images.length){showToast('ยังไม่มีภาพ','error');return;}
+  if(typeof JSZip==='undefined'){showToast('กำลังโหลด JSZip...','error');return;}
+  showToast('กำลังสร้าง ZIP...');
+  const zip=new JSZip();const folder=zip.folder('ai-image-pro-studio');
+  S.images.forEach((img,i)=>{folder.file(`image_${String(i+1).padStart(2,'0')}.png`,img.dataUrl.split(',')[1],{base64:true});});
+  folder.file('prompts.txt',S.images.map((img,i)=>`[${i+1}] ${img.prompt}`).join('\n\n'));
+  const blob=await zip.generateAsync({type:'blob'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`ai-studio-${Date.now()}.zip`;a.click();URL.revokeObjectURL(url);
+  showToast('Download ZIP สำเร็จ!');
+}
+
+// ===== RESET =====
+function resetWorkspace(){$('modal-reset').classList.remove('hidden');}
+function confirmReset(){
+  S.images=[];S.refBase64=null;S.refMime=null;S.styles.clear();S.poses.clear();S.typo={text:'',font:'Kanit',size:64,color:'#ffffff',align:'center',shadow:false,lh:1.4,x:0.5,y:0.5};S.typoActive=false;
+  $('prompt-input').value='';$('typo-text').value='';updateNativePrompt('');
+  document.querySelectorAll('.preset-btn.active').forEach(b=>b.classList.remove('active'));
+  $('upload-label').textContent='ลากภาพ Face Match / Reference';
+  renderGallery();$('modal-reset').classList.add('hidden');showToast('รีเซ็ต Workspace เรียบร้อย');
+}
+
+// ===== EVENT LISTENERS =====
+document.addEventListener('DOMContentLoaded',()=>{
+  // Generate buttons
+  $('btn-generate').addEventListener('click',handleGenerate);
+  $('btn-generate-bar').addEventListener('click',handleGenerate);
+  $('prompt-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleGenerate();}});
+
+  // Translate button
+  $('btn-translate').addEventListener('click',async()=>{
+    const v=$('prompt-input').value.trim();if(!v)return;if(!apiKey()){showToast('กรุณาใส่ API Key','error');return;}
+    try{const eng=await translateTH(v);$('prompt-input').value=eng;showToast('แปลภาษาสำเร็จ');}
+    catch(e){showToast(e.message,'error');}
+  });
+
+  // Inspire Me
+  $('btn-inspire').addEventListener('click',async()=>{
+    if(!apiKey()){showToast('กรุณาใส่ API Key','error');return;}
+    $('btn-inspire').disabled=true;
+    try{const p=await inspireMe();$('prompt-input').value=p;showToast('ได้ไอเดียแล้ว!');}
+    catch(e){showToast(e.message,'error');}
+    finally{$('btn-inspire').disabled=false;}
+  });
+
+  // Image decoder
+  $('btn-decode').addEventListener('click',async()=>{
+    if(!S.refBase64){showToast('กรุณาอัปโหลดภาพก่อน','error');return;}
+    if(!apiKey()){showToast('กรุณาใส่ API Key','error');return;}
+    showToast('กำลังถอดรหัสภาพ...');
+    try{
+      const result=await callText({text:'อธิบายภาพนี้เป็นภาษาไทยในรูปแบบ prompt สำหรับสร้างภาพ AI อย่างละเอียด รวมถึงสไตล์ สี แสง องค์ประกอบ และบรรยากาศ'});
+      const r=await fetch(`${API_BASE}/models/${MODELS.text}:generateContent?key=${apiKey()}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:'อธิบายภาพนี้เป็นภาษาไทยในรูปแบบ prompt สำหรับสร้างภาพ AI อย่างละเอียด'},{inlineData:{mimeType:S.refMime||'image/jpeg',data:S.refBase64}}]}],safetySettings:SAFETY})});
+      const d=await r.json();const txt=d.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+      if(txt){$('prompt-input').value=txt;showToast('ถอดรหัสภาพสำเร็จ!');}
+    }catch(e){showToast(e.message,'error');}
+  });
+
+  // Copy prompt
+  $('btn-copy-prompt').addEventListener('click',()=>{
+    const t=$('native-prompt').textContent;if(t&&t!=='—'){navigator.clipboard.writeText(t);showToast('Copy แล้ว!');}
+  });
+
+  // Reference image upload
+  $('ref-input').addEventListener('change',async e=>{
+    const file=e.target.files[0];if(!file)return;
+    S.refBase64=await fileToBase64(file);S.refMime=file.type;
+    $('upload-label').textContent='✓ '+file.name.substring(0,25);
+    showToast('อัปโหลดภาพ Reference สำเร็จ');
+  });
+
+  // Preset buttons (style/pose toggles)
+  document.querySelectorAll('.preset-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const g=btn.dataset.group,v=btn.dataset.val;
+      const set=g==='style'?S.styles:S.poses;
+      if(set.has(v)){set.delete(v);btn.classList.remove('active');}
+      else{set.add(v);btn.classList.add('active');}
+    });
+  });
+
+  // Aspect ratio buttons
+  document.querySelectorAll('#aspect-btns .aspect-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('#aspect-btns .aspect-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');S.aspect=btn.dataset.val;
+    });
+  });
+
+  // Batch count slider
+  $('batch-count').addEventListener('input',e=>{$('batch-display').textContent=e.target.value;S.count=parseInt(e.target.value);});
+
+  // Reset
+  $('btn-reset').addEventListener('click',resetWorkspace);
+  $('btn-confirm-reset').addEventListener('click',confirmReset);
+  $('btn-cancel-reset').addEventListener('click',()=>$('modal-reset').classList.add('hidden'));
+
+  // Download all
+  [$('btn-download-all'),$('btn-download-all-gallery')].forEach(b=>{if(b)b.addEventListener('click',downloadAll);});
+
+  // ---- POST PROCESSING ----
+  $('btn-close-post').addEventListener('click',closePost);
+  $('btn-post-prev').addEventListener('click',()=>{S.curIdx=Math.max(0,S.curIdx-1);renderPost();});
+  $('btn-post-next').addEventListener('click',()=>{S.curIdx=Math.min(S.images.length-1,S.curIdx+1);renderPost();});
+
+  // Post toolbar buttons
+  $('btn-magic-edit').addEventListener('click',()=>{$('magic-edit-prompt').value='';$('modal-magic-edit').classList.remove('hidden');});
+  $('btn-toggle-typo').addEventListener('click',()=>{S.typoActive=!S.typoActive;$('btn-toggle-typo').style.background=S.typoActive?'linear-gradient(135deg,#b6a0ff,#7e51ff)':'';$('btn-toggle-typo').style.color=S.typoActive?'#000':'';if(S.typoActive)renderTypoCanvas();else clearCanvas();setupCanvasDrag();});
+  $('btn-upscale').addEventListener('click',upscale4K);
+  $('btn-develop').addEventListener('click',develop);
+  $('btn-quick-169').addEventListener('click',quick169);
+  $('btn-export-text').addEventListener('click',exportWithText);
+  $('btn-dl-single').addEventListener('click',()=>downloadSingle(S.curIdx));
+  $('btn-render-typo').addEventListener('click',()=>{S.typo.text=$('typo-text').value;S.typo.font=$('typo-font').value;S.typoActive=true;renderTypoCanvas();setupCanvasDrag();showToast('ใส่ Typography แล้ว — ลาก Text บนภาพได้');});
+
+  // Magic Edit
+  $('btn-apply-magic').addEventListener('click',applyMagicEdit);
+  $('btn-cancel-magic').addEventListener('click',()=>$('modal-magic-edit').classList.add('hidden'));
+  document.querySelectorAll('.magic-chip').forEach(c=>{c.addEventListener('click',()=>{$('magic-edit-prompt').value=c.textContent.trim();});});
+
+  // Typography controls
+  $('typo-size').addEventListener('input',e=>{S.typo.size=parseInt(e.target.value);$('typo-size-val').textContent=e.target.value+'px';if(S.typoActive)renderTypoCanvas();});
+  $('typo-lh').addEventListener('input',e=>{S.typo.lh=parseFloat(e.target.value);$('typo-lh-val').textContent=e.target.value;if(S.typoActive)renderTypoCanvas();});
+  $('typo-font').addEventListener('change',e=>{S.typo.font=e.target.value;if(S.typoActive)renderTypoCanvas();});
+  $('typo-color-pick').addEventListener('input',e=>{S.typo.color=e.target.value;if(S.typoActive)renderTypoCanvas();});
+  document.querySelectorAll('.typo-color').forEach(b=>{b.addEventListener('click',()=>{S.typo.color=b.dataset.color;document.querySelectorAll('.typo-color').forEach(x=>x.classList.remove('ring-2','ring-primary','ring-offset-1'));b.classList.add('ring-2','ring-primary','ring-offset-1');if(S.typoActive)renderTypoCanvas();});});
+  document.querySelectorAll('.typo-align').forEach(b=>{b.addEventListener('click',()=>{S.typo.align=b.dataset.align;document.querySelectorAll('.typo-align').forEach(x=>{x.classList.remove('bg-surface-bright');x.querySelector('span').classList.remove('text-primary');});b.classList.add('bg-surface-bright');b.querySelector('span').classList.add('text-primary');if(S.typoActive)renderTypoCanvas();});});
+  $('typo-shadow').addEventListener('click',()=>{S.typo.shadow=!S.typo.shadow;$('typo-shadow').style.background=S.typo.shadow?'linear-gradient(135deg,#b6a0ff,#7e51ff)':'#262626';$('typo-shadow').querySelector('div').style.marginLeft=S.typo.shadow?'20px':'0';if(S.typoActive)renderTypoCanvas();});
+
+  // Close post on backdrop
+  $('modal-magic-edit').addEventListener('click',e=>{if(e.target===$('modal-magic-edit'))$('modal-magic-edit').classList.add('hidden');});
+});
+</script>
+</body></html>
