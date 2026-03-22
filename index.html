@@ -164,9 +164,9 @@
       <div>
         <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">AI Engine</label>
         <select id="sel-engine" class="w-full mt-0.5 bg-surface-container-highest border-none rounded text-xs text-on-surface focus:ring-1 focus:ring-primary py-1.5 px-2">
-          <option value="flash">🍌🍌 Nano Banana 2 (Fast)</option>
-          <option value="imagen">✨ Imagen 4 Standard (Quality)</option>
           <option value="imagen-fast">⚡ Imagen 4 Fast (Speed)</option>
+          <option value="flash">🍌🍌 Nano Banana 2 (Creative)</option>
+          <option value="imagen">✨ Imagen 4 Standard (Quality)</option>
           <option value="imagen-ultra">💎 Imagen 4 Ultra (Best)</option>
         </select>
       </div>
@@ -183,9 +183,9 @@
       <div>
         <div class="flex justify-between items-center mb-1">
           <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Image Count</label>
-          <span id="batch-display" class="text-xs font-bold text-primary">4</span>
+          <span id="batch-display" class="text-xs font-bold text-primary">2</span>
         </div>
-        <input id="batch-count" type="range" min="1" max="8" value="4" class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary">
+        <input id="batch-count" type="range" min="1" max="8" value="2" class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary">
       </div>
     </div>
   </div>
@@ -651,8 +651,14 @@ async function handleGenerate(){
     animateProgress(60,2000);showLoading(true,'AI กำลังสร้างภาพของคุณ...');
     let imgs=[];
     const engineVariantMap={'flash':'flash','imagen':'standard','imagen-fast':'fast','imagen-ultra':'ultra'};
-    if(engine==='flash'){for(let i=0;i<count;i++){imgs.push(await genFlash(final,S.refBase64,S.refMime));animateProgress(60+(i+1)/count*35,400);}}
-    else{const variant=engineVariantMap[engine]||'standard';imgs=await genImagen(final,S.aspect,count,variant);animateProgress(95,500);}
+    if(engine==='flash'){
+      // Parallel generation — all requests fire simultaneously
+      const promises=Array.from({length:count},()=>genFlash(final,S.refBase64,S.refMime));
+      let done=0;
+      const results=await Promise.allSettled(promises.map(p=>p.then(url=>{done++;animateProgress(60+done/count*35,300);return url;})));
+      imgs=results.filter(r=>r.status==='fulfilled').map(r=>r.value);
+      if(!imgs.length)throw new Error(results[0]?.reason?.message||'ไม่ได้รับภาพ');
+    }else{const variant=engineVariantMap[engine]||'standard';imgs=await genImagen(final,S.aspect,count,variant);animateProgress(95,500);}
     animateProgress(100,200);
     setTimeout(()=>{
       imgs.forEach(d=>S.images.unshift({dataUrl:d,prompt:final,isUpscaled:false,seed:Date.now()}));
