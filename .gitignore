@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# API Keys — ห้าม commit เด็ดขาด
+*.env
+.env*
+secrets.js
+config.local.js
+
+# Node (ถ้ามีในอนาคต)
+node_modules/
+npm-debug.log*
+
+# Build outputs
+dist/
+build/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.log

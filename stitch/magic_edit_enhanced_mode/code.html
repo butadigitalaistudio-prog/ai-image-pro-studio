@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed": "#49147f",
+              "secondary-container": "#5d2c92",
+              "surface-variant": "#262626",
+              "on-primary-fixed-variant": "#32008a",
+              "tertiary-dim": "#ef77a0",
+              "surface-container-low": "#131313",
+              "inverse-on-surface": "#565555",
+              "on-primary": "#340090",
+              "on-primary-fixed": "#000000",
+              "error-dim": "#d73357",
+              "tertiary-container": "#fc81ab",
+              "surface-bright": "#2c2c2c",
+              "surface-tint": "#b6a0ff",
+              "primary-fixed-dim": "#9c7eff",
+              "on-tertiary-fixed": "#380019",
+              "surface-container-highest": "#262626",
+              "on-surface": "#ffffff",
+              "tertiary-fixed": "#ff8db2",
+              "secondary-dim": "#b987f2",
+              "tertiary": "#ff97b8",
+              "on-tertiary": "#6a0936",
+              "outline": "#767575",
+              "surface-dim": "#0e0e0e",
+              "outline-variant": "#484847",
+              "surface-container-high": "#20201f",
+              "primary-container": "#a98fff",
+              "surface-container": "#1a1a1a",
+              "error-container": "#a70138",
+              "on-secondary-fixed-variant": "#67389d",
+              "on-error": "#490013",
+              "on-tertiary-fixed-variant": "#70103b",
+              "on-primary-container": "#280072",
+              "error": "#ff6e84",
+              "surface": "#0e0e0e",
+              "secondary-fixed": "#e3c6ff",
+              "tertiary-fixed-dim": "#f57ca5",
+              "on-surface-variant": "#adaaaa",
+              "on-error-container": "#ffb2b9",
+              "primary-fixed": "#a98fff",
+              "secondary": "#c492fe",
+              "secondary-fixed-dim": "#d8b5ff",
+              "on-secondary-container": "#e2c5ff",
+              "surface-container-lowest": "#000000",
+              "background": "#0e0e0e",
+              "on-secondary": "#3e0174",
+              "inverse-surface": "#fcf9f8",
+              "primary": "#b6a0ff",
+              "primary-dim": "#7e51ff",
+              "on-tertiary-container": "#59002b",
+              "inverse-primary": "#6834eb",
+              "on-background": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-neon-gradient {
+            background: linear-gradient(135deg, #b6a0ff 0%, #7e51ff 100%);
+        }
+        .text-neon-glow {
+            text-shadow: 0 0 10px rgba(182, 160, 255, 0.4);
+        }
+        .glass-panel {
+            background: rgba(38, 38, 38, 0.6);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-neutral-950/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center justify-between px-6 h-16 w-full font-manrope tracking-tight text-white">
+<div class="text-xl font-bold bg-gradient-to-br from-violet-300 to-violet-600 bg-clip-text text-transparent">
+            Neon Observatory
+        </div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-neutral-400 hover:text-white transition-colors active:scale-95 duration-200" href="#">Workspace</a>
+<a class="text-violet-400 border-b-2 border-violet-500 hover:text-white transition-colors active:scale-95 duration-200" href="#">Canvas</a>
+<a class="text-neutral-400 hover:text-white transition-colors active:scale-95 duration-200" href="#">History</a>
+<a class="text-neutral-400 hover:text-white transition-colors active:scale-95 duration-200" href="#">Assets</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="material-symbols-outlined text-neutral-400 hover:text-white transition-colors">notifications</button>
+<button class="material-symbols-outlined text-neutral-400 hover:text-white transition-colors">settings</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User profile avatar" data-alt="Cyberpunk style user profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPI_7X70Vzokb--Uf1xbwwNjRapD1yrVll-wPS8jJmcDOVXsPmbzvpSTsTK9-LRIBfOW-cm_ZWtGm1WI2bo9TBp1KJCeOngIqAH-8T08pP4LUjbSfR2wsk9FbL3F7ciOQ4lm7DECb8-UwUabtRsQL3kWiVjTm1fREyKlG6jEiH1q1uSSimmnn9a3STIHREiFEb_K0geo7aAnrSScq9AP3KN6jBoN_aCBSVfWUfmPkzsvCXjBF0NBseY3xBHz_8uvg2LwUV8un2xpQ"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Hidden on Mobile) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-20 bg-neutral-950 flex flex-col items-center py-8 space-y-8 hidden md:flex">
+<div class="flex flex-col items-center space-y-8 flex-1">
+<button class="group flex flex-col items-center space-y-1 text-neutral-500 hover:bg-neutral-900/50 hover:text-neutral-200 transition-all duration-300 ease-in-out p-3 rounded-xl">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Generator</span>
+</button>
+<button class="group flex flex-col items-center space-y-1 bg-neutral-900 text-violet-400 relative after:absolute after:right-0 after:h-8 after:w-1 after:bg-violet-500 after:rounded-l-full transition-all duration-300 ease-in-out p-3 rounded-xl">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">brush</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Magic Edit</span>
+</button>
+<button class="group flex flex-col items-center space-y-1 text-neutral-500 hover:bg-neutral-900/50 hover:text-neutral-200 transition-all duration-300 ease-in-out p-3 rounded-xl">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Upscale</span>
+</button>
+<button class="group flex flex-col items-center space-y-1 text-neutral-500 hover:bg-neutral-900/50 hover:text-neutral-200 transition-all duration-300 ease-in-out p-3 rounded-xl">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Layers</span>
+</button>
+<button class="group flex flex-col items-center space-y-1 text-neutral-500 hover:bg-neutral-900/50 hover:text-neutral-200 transition-all duration-300 ease-in-out p-3 rounded-xl">
+<span class="material-symbols-outlined">tune</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Presets</span>
+</button>
+</div>
+<div class="flex flex-col items-center space-y-6 pb-4">
+<button class="text-neutral-500 hover:text-neutral-200 transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="text-neutral-500 hover:text-neutral-200 transition-colors">
+<span class="material-symbols-outlined">logout</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area (The Canvas) -->
+<main class="pt-16 md:pl-20 h-screen flex items-center justify-center p-4 md:p-8 bg-surface-dim">
+<div class="relative w-full max-w-5xl aspect-video rounded-xl overflow-hidden bg-surface-container shadow-2xl">
+<!-- Background Image (The Art being edited) -->
+<img alt="Post-processing content" class="w-full h-full object-cover opacity-80" data-alt="High quality cinematic portrait of a neon-lit futuristic character" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCdc1oiAGQl6Y13yNT8H1j_nWJKY2fB-smFmzkOR7-tHA4wYNVqkXWQLnpye3cpG1dRvvEedzln16MOJKRG3VO-xpA4pjf92VD2sTK5hy1RewKJd8rcYQtP9Vqno8NSuBT2VUyBVIXc9lF-7f9OqsHh0vEI78GTBGv58meIdQ3RqBbDRweqRFCYTviE87OhH-aSdHynxuiAfLLSenyu_izfDRNBw8PdrgKyr1DHoCY4SNlsjhYJz49FusizZgEQaQVYAb0Wwycx7A"/>
+<!-- Magic Edit Overlay Mask -->
+<div class="absolute inset-0 bg-black/40 backdrop-blur-[4px] flex items-center justify-center p-6">
+<!-- Modal Box -->
+<div class="w-full max-w-xl glass-panel p-8 rounded-2xl shadow-[0_32px_64px_rgba(0,0,0,0.6)] animate-in fade-in zoom-in duration-300">
+<!-- Prompt Breadcrumb Component -->
+<div class="flex items-center space-x-3 mb-6">
+<span class="text-[10px] font-semibold uppercase tracking-widest text-on-surface-variant/80">Active Process</span>
+<div class="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest">
+<span class="text-on-surface-variant/60">Selection</span>
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant/40">chevron_right</span>
+<span class="text-primary text-neon-glow">Refinement</span>
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant/40">chevron_right</span>
+<span class="text-on-surface-variant/60">Synthesis</span>
+</div>
+</div>
+<div class="flex items-start justify-between mb-2">
+<div>
+<h2 class="font-headline text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-primary to-violet-400 bg-clip-text text-transparent text-neon-glow">
+                                Magic Edit
+                            </h2>
+<p class="text-on-surface-variant text-sm mt-1 font-body leading-relaxed">Describe modifications using natural language.</p>
+</div>
+<span class="material-symbols-outlined text-primary/40 text-3xl select-none">temp_preferences_custom</span>
+</div>
+<!-- Text Input Box -->
+<div class="mt-6 relative group">
+<div class="absolute inset-y-0 left-4 flex items-start pt-4 pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant/50 text-xl group-focus-within:text-primary transition-colors">auto_fix_normal</span>
+</div>
+<textarea class="w-full bg-neutral-900/80 border border-white/5 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 rounded-xl pl-12 pr-4 py-4 text-sm font-body text-white placeholder-on-surface-variant/50 resize-none h-32 transition-all duration-300" placeholder="e.g., Change jacket to reflective chrome, add neon pink glasses..."></textarea>
+</div>
+<!-- Quick Suggestion Chips -->
+<div class="mt-4">
+<p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60 mb-3">Quick Suggestions</p>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-primary/5 text-[11px] font-medium transition-all duration-200 text-on-surface-variant hover:text-primary">
+                                Cyberpunk city background
+                            </button>
+<button class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-primary/5 text-[11px] font-medium transition-all duration-200 text-on-surface-variant hover:text-primary">
+                                Add neon glasses
+                            </button>
+<button class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-primary/5 text-[11px] font-medium transition-all duration-200 text-on-surface-variant hover:text-primary">
+                                Make it sunset
+                            </button>
+</div>
+</div>
+<!-- Footer Controls -->
+<div class="flex items-center justify-between mt-10">
+<div class="flex items-center space-x-2 text-on-surface-variant/40">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="text-[10px] font-bold tracking-widest uppercase font-label">v2.4 Core Engine</span>
+</div>
+<div class="flex items-center space-x-3">
+<button class="px-6 py-2.5 rounded-xl text-sm font-semibold font-label text-on-surface-variant hover:text-white hover:bg-white/5 transition-all active:scale-95 duration-200">
+                                Cancel
+                            </button>
+<button class="bg-neon-gradient px-8 py-2.5 rounded-xl text-sm font-extrabold font-label text-black shadow-[0_0_20px_rgba(182,160,255,0.2)] hover:shadow-[0_0_30px_rgba(182,160,255,0.4)] hover:brightness-110 active:scale-95 transition-all duration-200 flex items-center space-x-2">
+<span>Apply Change</span>
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Contextual HUD elements -->
+<div class="absolute top-4 right-4 flex space-x-2">
+<div class="bg-neutral-950/80 backdrop-blur-md px-3 py-1.5 rounded-lg flex items-center space-x-2 border border-white/10">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[10px] font-bold tracking-widest uppercase text-white/80">Live View</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Only Visible on Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-neutral-950/80 backdrop-blur-xl flex justify-around items-center h-16 px-4 z-50">
+<button class="flex flex-col items-center text-neutral-400">
+<span class="material-symbols-outlined">auto_awesome</span>
+</button>
+<button class="flex flex-col items-center text-violet-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">brush</span>
+</button>
+<button class="flex flex-col items-center text-neutral-400">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="flex flex-col items-center text-neutral-400">
+<span class="material-symbols-outlined">person</span>
+</button>
+</nav>
+</body></html>

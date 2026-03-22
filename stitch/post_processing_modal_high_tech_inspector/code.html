@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#0e0e0e",
+              "secondary-fixed": "#e3c6ff",
+              "tertiary-fixed-dim": "#f57ca5",
+              "on-surface-variant": "#adaaaa",
+              "on-primary-container": "#280072",
+              "error": "#ff6e84",
+              "on-tertiary-fixed-variant": "#70103b",
+              "error-container": "#a70138",
+              "on-secondary-fixed-variant": "#67389d",
+              "on-error": "#490013",
+              "on-tertiary-container": "#59002b",
+              "inverse-primary": "#6834eb",
+              "on-background": "#ffffff",
+              "inverse-surface": "#fcf9f8",
+              "primary": "#b6a0ff",
+              "primary-dim": "#7e51ff",
+              "secondary": "#c492fe",
+              "secondary-fixed-dim": "#d8b5ff",
+              "on-secondary-container": "#e2c5ff",
+              "surface-container-lowest": "#000000",
+              "background": "#0e0e0e",
+              "on-secondary": "#3e0174",
+              "on-error-container": "#ffb2b9",
+              "primary-fixed": "#a98fff",
+              "inverse-on-surface": "#565555",
+              "on-primary": "#340090",
+              "on-primary-fixed": "#000000",
+              "error-dim": "#d73357",
+              "tertiary-container": "#fc81ab",
+              "surface-bright": "#2c2c2c",
+              "tertiary-dim": "#ef77a0",
+              "surface-container-low": "#131313",
+              "secondary-container": "#5d2c92",
+              "surface-variant": "#262626",
+              "on-primary-fixed-variant": "#32008a",
+              "on-secondary-fixed": "#49147f",
+              "outline-variant": "#484847",
+              "surface-container-high": "#20201f",
+              "primary-container": "#a98fff",
+              "surface-container": "#1a1a1a",
+              "tertiary": "#ff97b8",
+              "on-tertiary": "#6a0936",
+              "outline": "#767575",
+              "surface-dim": "#0e0e0e",
+              "surface-container-highest": "#262626",
+              "on-surface": "#ffffff",
+              "tertiary-fixed": "#ff8db2",
+              "secondary-dim": "#b987f2",
+              "surface-tint": "#b6a0ff",
+              "primary-fixed-dim": "#9c7eff",
+              "on-tertiary-fixed": "#380019"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .thai-font {
+            font-family: 'Manrope', sans-serif;
+            letter-spacing: -0.02em;
+        }
+        .glass-panel {
+            background: rgba(32, 32, 31, 0.6);
+            backdrop-filter: blur(24px);
+        }
+        .canvas-bg {
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #0e0e0e 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-[#0e0e0e]/60 backdrop-blur-xl flex justify-between items-center px-6 h-16 w-full shadow-[0px_24px_48px_rgba(182,160,255,0.08)]">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold bg-gradient-to-br from-[#b6a0ff] to-[#7e51ff] bg-clip-text text-transparent font-['Manrope'] tracking-tight">Neon Observatory</span>
+<div class="h-4 w-[1px] bg-outline-variant/30"></div>
+<span class="text-[#adaaaa] font-['Inter'] text-sm uppercase tracking-widest font-semibold">Post-Processing</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-[#adaaaa] hover:bg-[#2c2c2c] transition-colors duration-200 active:scale-95 rounded-lg">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+</header>
+<!-- Main Workspace Canvas -->
+<main class="relative h-screen w-full flex items-center justify-center pt-16 pb-24 overflow-hidden canvas-bg">
+<!-- Floating Close Button (Direct User Request) -->
+<button class="fixed top-20 right-8 z-50 p-4 bg-surface-container-highest/80 backdrop-blur-md rounded-full border border-white/5 hover:bg-surface-bright transition-all active:scale-95 shadow-xl">
+<span class="material-symbols-outlined text-primary" data-icon="close">close</span>
+</button>
+<!-- Image Viewer (Primary Content) -->
+<div class="relative w-full max-w-5xl aspect-[16/9] px-4">
+<div class="relative w-full h-full rounded-xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] group">
+<img alt="AI generated cyberpunk cityscape" class="w-full h-full object-cover" data-alt="Futuristic neon city street at night with high detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzwYTCIgC6GbQBdtPx2GuZpvAyMNxEkVtCcEIM_-a8CWf4lgMXb5AvnG8Xz3SmvC83P8uY9NikhX-sPBEq7FpiFz5DiOFEKnOchvT791RUyfZ6TygW5B26dfRtt-La3Vzl8IW55x9_YtlC7TzKmkxvtB7ePE2WBG_TJ6sjCL9skDQzs9QvgBB3ucTMAjJBZUtbQubApkx55FzE4DK_6odkR6j69QpF1AYBAhXN3I11jP8PH1bhOZEi1XubxvStpC8eEypbGnNHUOY"/>
+<!-- Overlay Typography Preview (Thai Focus) -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="text-center">
+<h2 class="thai-font text-7xl font-black text-white drop-shadow-[0_0_30px_rgba(182,160,255,0.6)] mb-2">แสงสีแห่งอนาคต</h2>
+<p class="font-headline text-primary tracking-[0.5em] text-sm uppercase">Cyberpunk Chronicles</p>
+</div>
+</div>
+<!-- HUD Overlays -->
+<div class="absolute top-6 left-6 flex flex-col gap-2">
+<div class="px-3 py-1 bg-black/40 backdrop-blur-md rounded-lg border border-primary/20 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[10px] font-bold tracking-widest uppercase">Rendering 4K</span>
+</div>
+<div class="px-3 py-1 bg-black/40 backdrop-blur-md rounded-lg border border-white/10">
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest">Seed: 84920112</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Typography Studio Sidebar (The "Inspector") -->
+<aside class="fixed right-0 top-16 h-[calc(100vh-128px)] w-80 z-40 flex flex-col border-l border-[#b6a0ff]/10 bg-[#131313] shadow-[-10px_0_30px_rgba(0,0,0,0.3)]">
+<div class="p-6 border-b border-outline-variant/15">
+<h3 class="text-[#ffffff] font-black text-sm uppercase tracking-wider">Typography Studio</h3>
+<p class="text-[#adaaaa] text-xs">Post-Processing</p>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-8">
+<!-- Navigation Tabs (Mapping from JSON) -->
+<nav class="flex justify-between items-center bg-surface-container-high rounded-lg p-1 mb-8">
+<button class="flex flex-col items-center justify-center p-2 border-r-4 border-[#b6a0ff] text-[#ffffff] bg-[#20201f] transition-all duration-300 ease-in-out flex-1">
+<span class="material-symbols-outlined text-sm" data-icon="match_case">match_case</span>
+<span class="text-[9px] mt-1 uppercase font-bold">Font</span>
+</button>
+<button class="flex flex-col items-center justify-center p-2 text-[#adaaaa] hover:bg-[#1a1a1a] hover:text-[#b6a0ff] transition-all duration-300 ease-in-out flex-1">
+<span class="material-symbols-outlined text-sm" data-icon="palette">palette</span>
+<span class="text-[9px] mt-1 uppercase">Color</span>
+</button>
+<button class="flex flex-col items-center justify-center p-2 text-[#adaaaa] hover:bg-[#1a1a1a] hover:text-[#b6a0ff] transition-all duration-300 ease-in-out flex-1">
+<span class="material-symbols-outlined text-sm" data-icon="format_size">format_size</span>
+<span class="text-[9px] mt-1 uppercase">Size</span>
+</button>
+<button class="flex flex-col items-center justify-center p-2 text-[#adaaaa] hover:bg-[#1a1a1a] hover:text-[#b6a0ff] transition-all duration-300 ease-in-out flex-1">
+<span class="material-symbols-outlined text-sm" data-icon="format_line_spacing">format_line_spacing</span>
+<span class="text-[9px] mt-1 uppercase">Space</span>
+</button>
+</nav>
+<!-- Tool Control Groups -->
+<div class="space-y-6">
+<div>
+<label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3 block">Thai Script Preset</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="bg-surface-container-highest p-3 rounded-lg border border-primary/20 text-left hover:bg-surface-bright transition-colors">
+<span class="thai-font text-lg text-primary block">กขค</span>
+<span class="text-[9px] opacity-60">Modern Mono</span>
+</button>
+<button class="bg-surface-container-low p-3 rounded-lg border border-white/5 text-left hover:bg-surface-bright transition-colors">
+<span class="thai-font text-lg text-white block">สวัสดี</span>
+<span class="text-[9px] opacity-60">Geometric</span>
+</button>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-3">
+<label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Letter Spacing</label>
+<span class="text-[10px] text-primary font-mono">-0.02em</span>
+</div>
+<div class="relative h-1 bg-surface-variant rounded-full group cursor-pointer">
+<div class="absolute top-0 left-0 h-full w-2/3 bg-primary rounded-full shadow-[0_0_10px_rgba(182,160,255,0.6)]"></div>
+<div class="absolute top-1/2 left-2/3 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-primary rounded-full shadow-[0_0_15px_rgba(182,160,255,0.8)] border-2 border-surface cursor-grab active:cursor-grabbing"></div>
+</div>
+</div>
+<div>
+<label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3 block">Vertical Alignment</label>
+<div class="flex gap-1 bg-surface-container-high p-1 rounded-lg">
+<button class="flex-1 py-2 rounded bg-surface-bright flex justify-center"><span class="material-symbols-outlined text-sm" data-icon="format_align_left">format_align_left</span></button>
+<button class="flex-1 py-2 rounded hover:bg-surface-bright flex justify-center"><span class="material-symbols-outlined text-sm" data-icon="format_align_center">format_align_center</span></button>
+<button class="flex-1 py-2 rounded hover:bg-surface-bright flex justify-center"><span class="material-symbols-outlined text-sm" data-icon="format_align_right">format_align_right</span></button>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/10">
+<div class="flex items-center justify-between">
+<span class="text-xs">Neon Glow Intensity</span>
+<div class="w-10 h-5 bg-primary/20 rounded-full relative p-0.5">
+<div class="w-4 h-4 bg-primary rounded-full shadow-lg shadow-primary/40 ml-auto"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 bg-surface-container">
+<button class="w-full py-3 bg-gradient-to-br from-[#b6a0ff] to-[#7e51ff] rounded-full text-white font-bold text-sm tracking-tight shadow-[0_0_20px_rgba(182,160,255,0.4)] hover:brightness-110 active:scale-95 transition-all">
+                    Apply Typography
+                </button>
+</div>
+</aside>
+<!-- Bottom Toolbar (Mapping from BottomNavBar JSON) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 rounded-t-xl bg-[#131313]/80 backdrop-blur-2xl border-t border-[#b6a0ff]/15 shadow-[0_-8px_32px_rgba(0,0,0,0.5)] flex justify-around items-center px-4 py-3 pb-safe">
+<!-- Magic Edit Active -->
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-[#b6a0ff] to-[#7e51ff] text-white rounded-lg p-2 shadow-[0_0_15px_rgba(182,160,255,0.4)] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="magic_button">magic_button</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Magic Edit</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="title">title</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Typography</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="high_quality">high_quality</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Upscale 4K</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Develop</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="aspect_ratio">aspect_ratio</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">16:9</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="content_copy">content_copy</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Copy</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Export</span>
+</button>
+</nav>
+</main>
+<!-- Contextual FAB (Suppressing as per mandate for focused details screen, but adding a specialized tool trigger) -->
+<div class="fixed bottom-24 right-8 z-50 flex flex-col gap-4">
+<button class="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-[0_0_30px_rgba(182,160,255,0.4)] text-on-primary active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</button>
+</div>
+</body></html>

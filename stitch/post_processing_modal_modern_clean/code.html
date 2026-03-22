@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neon Observatory - Post-Processing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#0e0e0e",
+                        "secondary-fixed": "#e3c6ff",
+                        "tertiary-fixed-dim": "#f57ca5",
+                        "on-surface-variant": "#adaaaa",
+                        "on-primary-container": "#280072",
+                        "error": "#ff6e84",
+                        "on-tertiary-fixed-variant": "#70103b",
+                        "error-container": "#a70138",
+                        "on-secondary-fixed-variant": "#67389d",
+                        "on-error": "#490013",
+                        "on-tertiary-container": "#59002b",
+                        "inverse-primary": "#6834eb",
+                        "on-background": "#ffffff",
+                        "inverse-surface": "#fcf9f8",
+                        "primary": "#b6a0ff",
+                        "primary-dim": "#7e51ff",
+                        "secondary": "#c492fe",
+                        "secondary-fixed-dim": "#d8b5ff",
+                        "on-secondary-container": "#e2c5ff",
+                        "surface-container-lowest": "#000000",
+                        "background": "#0e0e0e",
+                        "on-secondary": "#3e0174",
+                        "on-error-container": "#ffb2b9",
+                        "primary-fixed": "#a98fff",
+                        "inverse-on-surface": "#565555",
+                        "on-primary": "#340090",
+                        "on-primary-fixed": "#000000",
+                        "error-dim": "#d73357",
+                        "tertiary-container": "#fc81ab",
+                        "surface-bright": "#2c2c2c",
+                        "tertiary-dim": "#ef77a0",
+                        "surface-container-low": "#131313",
+                        "secondary-container": "#5d2c92",
+                        "surface-variant": "#262626",
+                        "on-primary-fixed-variant": "#32008a",
+                        "on-secondary-fixed": "#49147f",
+                        "outline-variant": "#484847",
+                        "surface-container-high": "#20201f",
+                        "primary-container": "#a98fff",
+                        "surface-container": "#1a1a1a",
+                        "tertiary": "#ff97b8",
+                        "on-tertiary": "#6a0936",
+                        "outline": "#767575",
+                        "surface-dim": "#0e0e0e",
+                        "surface-container-highest": "#262626",
+                        "on-surface": "#ffffff",
+                        "tertiary-fixed": "#ff8db2",
+                        "secondary-dim": "#b987f2",
+                        "surface-tint": "#b6a0ff",
+                        "primary-fixed-dim": "#9c7eff",
+                        "on-tertiary-fixed": "#380019"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0e0e0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #262626;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-hidden">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#0e0e0e]/60 backdrop-blur-xl flex justify-between items-center px-6 h-16 w-full shadow-[0px_24px_48px_rgba(182,160,255,0.08)]">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold bg-gradient-to-br from-[#b6a0ff] to-[#7e51ff] bg-clip-text text-transparent font-headline">Neon Observatory</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-['Manrope'] text-lg tracking-tight text-[#adaaaa] hover:bg-[#2c2c2c] transition-colors duration-200 p-2 cursor-pointer rounded-lg active:scale-95 duration-150">Gallery</span>
+<span class="font-['Manrope'] text-lg tracking-tight text-[#adaaaa] hover:bg-[#2c2c2c] transition-colors duration-200 p-2 cursor-pointer rounded-lg active:scale-95 duration-150">Models</span>
+<span class="font-['Manrope'] text-lg tracking-tight text-[#ffffff] p-2 cursor-pointer rounded-lg active:scale-95 duration-150">Editor</span>
+</div>
+<button class="text-[#b6a0ff] p-2 hover:bg-[#2c2c2c] transition-colors duration-200 rounded-lg active:scale-95 duration-150">
+<span class="material-symbols-outlined">close</span>
+</button>
+</nav>
+<!-- Main Workspace -->
+<main class="relative h-screen w-full flex bg-surface-container-lowest overflow-hidden pt-16 pb-20">
+<!-- Center Canvas -->
+<div class="flex-1 relative flex items-center justify-center p-8 transition-all duration-300 mr-80">
+<!-- Navigation Arrows -->
+<button class="absolute left-8 z-10 p-4 rounded-full bg-surface-container/40 hover:bg-surface-container-high transition-all text-on-surface-variant hover:text-primary active:scale-90">
+<span class="material-symbols-outlined text-4xl">chevron_left</span>
+</button>
+<button class="absolute right-8 z-10 p-4 rounded-full bg-surface-container/40 hover:bg-surface-container-high transition-all text-on-surface-variant hover:text-primary active:scale-90">
+<span class="material-symbols-outlined text-4xl">chevron_right</span>
+</button>
+<!-- Main Image Container -->
+<div class="relative group max-w-5xl w-full aspect-video rounded-xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-outline-variant/10">
+<img alt="Cinematic abstract neon landscape" class="w-full h-full object-cover" data-alt="Abstract neon digital art landscape visual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAL57TEsdJ0PVNxajtaS3QBMIw2yfwZdDahL1aLADadl264EEtd_Yjr8mUb7d27hcaDz5T2k7kH6F_rM1g9UBlNNupWOTpOo2znL-wWNX61PmZvOos35m6oJkXcf01lEoGbzQMmPAdmoifQPpeNrIGnDIeVpPCKyrqsrTNxf8EOMwO-EiKVP3-36IrYki7RVyX6Z-2YwfDgvPwmzeKcm83Y7F053KjY_MugHx314tj2fL7rmD8addCREiASgp1xmtqUWryXTMw4e8"/>
+<!-- Floating Overlay Info (Prompt Breadcrumb) -->
+<div class="absolute top-6 left-6 flex items-center gap-3">
+<div class="px-4 py-2 bg-surface-container-highest/60 backdrop-blur-md rounded-lg flex items-center gap-2 border border-primary/20">
+<span class="text-xs font-semibold text-primary uppercase tracking-widest">Denoising</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">arrow_forward_ios</span>
+<span class="text-xs font-semibold text-on-surface-variant uppercase tracking-widest">Refinement</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">arrow_forward_ios</span>
+<span class="text-xs font-semibold text-on-surface-variant uppercase tracking-widest">Color Grade</span>
+</div>
+</div>
+</div>
+</div>
+<!-- SideNavBar (Typography Studio) -->
+<aside class="fixed right-0 top-16 h-[calc(100vh-128px)] w-80 z-40 bg-[#131313] flex flex-col border-l border-[#b6a0ff]/10 shadow-[-10px_0_30px_rgba(0,0,0,0.3)]">
+<div class="p-6 border-b border-outline-variant/10">
+<h2 class="text-sm font-black text-[#ffffff] uppercase tracking-tighter">Typography Studio</h2>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-[0.2em] mt-1">Post-Processing</p>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-8">
+<!-- Font Selection -->
+<div class="space-y-4">
+<label class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">match_case</span> Font Face
+                    </label>
+<div class="relative group">
+<div class="w-full bg-surface-container-highest px-4 py-3 rounded-lg border-b-2 border-transparent focus-within:border-primary transition-all flex items-center justify-between cursor-pointer">
+<span class="text-sm text-on-surface">Sukhumvit Set</span>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+<div class="hidden group-hover:block absolute top-full left-0 w-full bg-surface-container-high mt-1 rounded-lg shadow-2xl z-50 py-2 border border-outline-variant/10">
+<div class="px-4 py-2 hover:bg-primary/10 text-sm text-on-surface cursor-pointer">Sarabun Thai</div>
+<div class="px-4 py-2 hover:bg-primary/10 text-sm text-on-surface cursor-pointer">Kanit Regular</div>
+<div class="px-4 py-2 hover:bg-primary/10 text-sm text-on-surface cursor-pointer">Mitr Light</div>
+</div>
+</div>
+</div>
+<!-- Color Picker -->
+<div class="space-y-4">
+<label class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">palette</span> Color Palette
+                    </label>
+<div class="grid grid-cols-5 gap-3">
+<button class="w-8 h-8 rounded-full bg-white ring-2 ring-primary ring-offset-2 ring-offset-surface-container"></button>
+<button class="w-8 h-8 rounded-full bg-primary"></button>
+<button class="w-8 h-8 rounded-full bg-secondary"></button>
+<button class="w-8 h-8 rounded-full bg-tertiary"></button>
+<button class="w-8 h-8 rounded-full bg-surface-bright border border-outline-variant"></button>
+</div>
+</div>
+<!-- Sliders -->
+<div class="space-y-8">
+<!-- Size -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">format_size</span> Font Size
+                            </label>
+<span class="text-xs text-primary font-mono">64px</span>
+</div>
+<div class="h-1 bg-surface-variant rounded-full relative">
+<div class="absolute left-0 top-0 h-full w-2/3 bg-primary-container/40"></div>
+<div class="absolute left-2/3 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary shadow-[0_0_10px_rgba(182,160,255,0.8)] cursor-pointer"></div>
+</div>
+</div>
+<!-- Spacing -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">format_line_spacing</span> Line Height
+                            </label>
+<span class="text-xs text-primary font-mono">1.2</span>
+</div>
+<div class="h-1 bg-surface-variant rounded-full relative">
+<div class="absolute left-0 top-0 h-full w-1/3 bg-primary-container/40"></div>
+<div class="absolute left-1/3 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary shadow-[0_0_10px_rgba(182,160,255,0.8)] cursor-pointer"></div>
+</div>
+</div>
+<!-- Align -->
+<div class="space-y-4">
+<label class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">format_align_center</span> Alignment
+                        </label>
+<div class="flex bg-surface-container-highest rounded-lg p-1">
+<button class="flex-1 py-2 text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">format_align_left</span></button>
+<button class="flex-1 py-2 bg-surface-bright text-primary rounded-md shadow-sm"><span class="material-symbols-outlined">format_align_center</span></button>
+<button class="flex-1 py-2 text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">format_align_right</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="p-6 bg-surface-container-low border-t border-outline-variant/10">
+<button class="w-full py-4 bg-gradient-to-br from-[#b6a0ff] to-[#7e51ff] text-on-primary-fixed font-bold text-xs uppercase tracking-[0.2em] rounded-full hover:brightness-110 transition-all active:scale-95 shadow-[0_0_30px_rgba(182,160,255,0.2)]">
+                    Apply Changes
+                </button>
+</div>
+</aside>
+</main>
+<!-- BottomNavBar (Toolbar) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-[#131313]/80 backdrop-blur-2xl z-50 rounded-t-xl border-t border-[#b6a0ff]/15 shadow-[0_-8px_32px_rgba(0,0,0,0.5)]">
+<!-- Magic Edit -->
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="magic_button">magic_button</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Magic Edit</span>
+</button>
+<!-- Typography (ACTIVE) -->
+<button class="flex flex-col items-center justify-center bg-gradient-to-br from-[#b6a0ff] to-[#7e51ff] text-white rounded-lg px-4 py-2 shadow-[0_0_15px_rgba(182,160,255,0.4)] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="title" style="font-variation-settings: 'FILL' 1;">title</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Typography</span>
+</button>
+<!-- Upscale 4K -->
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="high_quality">high_quality</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Upscale 4K</span>
+</button>
+<!-- Develop -->
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Develop</span>
+</button>
+<!-- 16:9 -->
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="aspect_ratio">aspect_ratio</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">16:9</span>
+</button>
+<!-- Copy -->
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="content_copy">content_copy</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Copy</span>
+</button>
+<!-- Export -->
+<button class="flex flex-col items-center justify-center text-[#adaaaa] p-2 hover:text-[#ffffff] hover:bg-[#20201f] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Export</span>
+</button>
+</nav>
+</body></html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed": "#49147f",
+              "secondary-container": "#5d2c92",
+              "surface-variant": "#262626",
+              "on-primary-fixed-variant": "#32008a",
+              "tertiary-dim": "#ef77a0",
+              "surface-container-low": "#131313",
+              "inverse-on-surface": "#565555",
+              "on-primary": "#340090",
+              "on-primary-fixed": "#000000",
+              "error-dim": "#d73357",
+              "tertiary-container": "#fc81ab",
+              "surface-bright": "#2c2c2c",
+              "surface-tint": "#b6a0ff",
+              "primary-fixed-dim": "#9c7eff",
+              "on-tertiary-fixed": "#380019",
+              "surface-container-highest": "#262626",
+              "on-surface": "#ffffff",
+              "tertiary-fixed": "#ff8db2",
+              "secondary-dim": "#b987f2",
+              "tertiary": "#ff97b8",
+              "on-tertiary": "#6a0936",
+              "outline": "#767575",
+              "surface-dim": "#0e0e0e",
+              "outline-variant": "#484847",
+              "surface-container-high": "#20201f",
+              "primary-container": "#a98fff",
+              "surface-container": "#1a1a1a",
+              "error-container": "#a70138",
+              "on-secondary-fixed-variant": "#67389d",
+              "on-error": "#490013",
+              "on-tertiary-fixed-variant": "#70103b",
+              "on-primary-container": "#280072",
+              "error": "#ff6e84",
+              "surface": "#0e0e0e",
+              "secondary-fixed": "#e3c6ff",
+              "tertiary-fixed-dim": "#f57ca5",
+              "on-surface-variant": "#adaaaa",
+              "on-error-container": "#ffb2b9",
+              "primary-fixed": "#a98fff",
+              "secondary": "#c492fe",
+              "secondary-fixed-dim": "#d8b5ff",
+              "on-secondary-container": "#e2c5ff",
+              "surface-container-lowest": "#000000",
+              "background": "#0e0e0e",
+              "on-secondary": "#3e0174",
+              "inverse-surface": "#fcf9f8",
+              "primary": "#b6a0ff",
+              "primary-dim": "#7e51ff",
+              "on-tertiary-container": "#59002b",
+              "inverse-primary": "#6834eb",
+              "on-background": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .glass-panel {
+            background: rgba(38, 38, 38, 0.6);
+            backdrop-filter: blur(24px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-hidden h-screen">
+<nav class="fixed top-0 w-full z-50 bg-neutral-950/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center justify-between px-6 h-16 w-full">
+<div class="text-xl font-bold bg-gradient-to-br from-violet-300 to-violet-600 bg-clip-text text-transparent font-manrope tracking-tight">
+            Neon Observatory
+        </div>
+<div class="hidden md:flex items-center space-x-8 font-manrope tracking-tight text-white">
+<a class="text-violet-400 border-b-2 border-violet-500 transition-colors" href="#">Workspace</a>
+<a class="text-neutral-400 hover:text-white transition-colors" href="#">Canvas</a>
+<a class="text-neutral-400 hover:text-white transition-colors" href="#">History</a>
+<a class="text-neutral-400 hover:text-white transition-colors" href="#">Assets</a>
+</div>
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-neutral-400 hover:text-white cursor-pointer transition-colors">notifications</span>
+<span class="material-symbols-outlined text-neutral-400 hover:text-white cursor-pointer transition-colors">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="User profile avatar" data-alt="Close up of a professional male headshot avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbkL5lENj2TFPG6jAAg6wg3Ja70XUxXrbfLaOv2mkx_SL9oOn8GeD3D6H7-RoCVXZrGTdi_nG_9HM60EF_bGOVZ3hzCgK1x62NxV7J0ScdWmqTZPOZxziSFb-NsIyBGIFNONEpxWSkjuMYEGtBUTsR_mH2YueGpyGZCJzhiPmDF3URiKo2rHRtDTQmr94Xw0fUvufmAliu1dr1BpoF4dAP4-Mz_cTVbvnuuiWDL_d_9AL79d5mOaF0SRRZwbecuByBoOgywHdhuQc"/>
+</div>
+</div>
+</nav>
+<div class="fixed left-0 top-16 h-[calc(100vh-64px)] w-20 bg-neutral-950 flex flex-col items-center py-8 space-y-8 z-40">
+<div class="flex flex-col items-center space-y-1 group cursor-pointer transition-all duration-300 ease-in-out bg-neutral-900 text-violet-400 relative after:absolute after:right-0 after:h-8 after:w-1 after:bg-violet-500 after:rounded-l-full w-full py-2">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Generator</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer transition-all duration-300 ease-in-out text-neutral-500 hover:bg-neutral-900/50 hover:text-neutral-200 w-full py-2">
+<span class="material-symbols-outlined">brush</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest text-center">Magic Edit</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer transition-all duration-300 ease-in-out text-neutral-500 hover:bg-neutral-900/50 hover:text-neutral-200 w-full py-2">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Upscale</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer transition-all duration-300 ease-in-out text-neutral-500 hover:bg-neutral-900/50 hover:text-neutral-200 w-full py-2">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Layers</span>
+</div>
+<div class="mt-auto flex flex-col items-center space-y-6 w-full pb-4">
+<span class="material-symbols-outlined text-neutral-500 hover:text-white cursor-pointer transition-colors">help</span>
+<span class="material-symbols-outlined text-neutral-500 hover:text-white cursor-pointer transition-colors">logout</span>
+</div>
+</div>
+<main class="ml-20 mt-16 p-8 h-[calc(100vh-64px)] overflow-hidden flex items-center justify-center relative">
+<div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+<img class="w-full h-full object-cover" data-alt="Dark abstract cinematic smoke and light patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcqADj36rH0p0pZW29eaVrb8w1mlIrpvfDqCNZBWHNmlhOgnGO2f5mX8qbn61swMVdzpOdOqGFg_XibbfA81yu_ScsO1W_KZvfcPQyBthDrM6-ZNv5fuibkfzA1Mumj9AYPm0uJcmSkx-n4ZhMU-WrFxc0nOGbPFt4LZ98QdevJOyLoZB5V-Gka53TWnZhLnAnKTi_J9FS9R59peCtNL6G8gxnzJfX_udx-Rx0zQ3dl2F-rRui0NzQC3WhYK7fS68gS9igGt3ErxU"/>
+</div>
+<div class="fixed top-20 right-8 z-[100] flex flex-col gap-4 pointer-events-none">
+<div class="glass-panel px-6 py-4 rounded-lg flex items-center space-x-4 border-l-4 border-primary shadow-2xl animate-fade-in pointer-events-auto max-w-sm">
+<div class="bg-primary/20 p-2 rounded-full">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<h4 class="font-headline text-white text-sm font-bold">Image Generated!</h4>
+<p class="text-on-surface-variant text-xs mt-0.5">Your creative vision is now reality.</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer text-lg hover:text-white">close</span>
+</div>
+<div class="glass-panel px-6 py-4 rounded-lg flex items-center space-x-4 border-l-4 border-error shadow-2xl animate-fade-in pointer-events-auto max-w-sm">
+<div class="bg-error/20 p-2 rounded-full">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+<div>
+<h4 class="font-headline text-white text-sm font-bold">Generation Failed</h4>
+<p class="text-on-surface-variant text-xs mt-0.5">The engine encountered a drift error.</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer text-lg hover:text-white">close</span>
+</div>
+</div>
+<div class="fixed inset-0 bg-neutral-950/80 backdrop-blur-sm z-[150] flex items-center justify-center p-6">
+<div class="bg-surface-container w-full max-w-md rounded-xl overflow-hidden shadow-[0_48px_64px_-12px_rgba(0,0,0,0.8)] border border-outline-variant/15">
+<div class="p-8 text-center">
+<div class="w-16 h-16 bg-error/10 text-error rounded-full flex items-center justify-center mx-auto mb-6">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 0;">restart_alt</span>
+</div>
+<h2 class="font-headline text-2xl font-extrabold text-white mb-3 tracking-tight">Reset Workspace?</h2>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-8">
+                        Are you sure you want to reset? This will purge all active layers, prompt history, and unsaved iterations. This action cannot be undone.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-3">
+<button class="flex-1 px-6 py-3.5 bg-error text-on-error font-headline font-bold rounded-full flex items-center justify-center space-x-2 transition-transform active:scale-95 group">
+<svg class="animate-spin h-4 w-4 text-on-error opacity-70" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor"></path>
+</svg>
+<span>Confirm</span>
+</button>
+<button class="flex-1 px-6 py-3.5 bg-surface-container-highest text-on-surface font-headline font-bold rounded-full hover:bg-surface-bright transition-colors active:scale-95">
+                            Cancel
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-6 w-full max-w-6xl opacity-40 pointer-events-none">
+<div class="col-span-3 aspect-video rounded-xl bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Highly detailed cybernetic landscape AI art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq576P-LI4wTORyI5uMPFvwwNxEv_S9RQLLNLsc4jl0puwnMPDpuVoqD3wPoaaBIjxPognSQOofNId8G6xqbdtna3IojGsDoQh9UuqPBgxybeh57tqEUsUZKOOH4A9-Ztig8im6P96EE6gYZWpTIusEycu19glBiyh11qWT663WQ0UyW70Z7I3eGXF7563_FKY_WXGeqmq_Rev_nTQBaOogQ3abXSwK-_J3A7ncnhWBrBMbOE-nju0nnySM96Sp41msnat2nC87u8"/>
+</div>
+<div class="col-span-1 space-y-6">
+<div class="h-40 rounded-xl bg-surface-container-high p-4">
+<div class="w-full h-2 bg-outline-variant rounded-full mb-4"></div>
+<div class="w-3/4 h-2 bg-outline-variant rounded-full mb-4"></div>
+<div class="w-1/2 h-2 bg-outline-variant rounded-full"></div>
+</div>
+<div class="h-64 rounded-xl bg-surface-container-high flex flex-col items-center justify-center space-y-4">
+<div class="w-12 h-12 rounded-full border-4 border-t-primary border-outline-variant animate-spin"></div>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest font-medium">Processing Engine</span>
+</div>
+</div>
+</div>
+</main>
+<div class="md:hidden fixed bottom-0 w-full bg-neutral-950 px-6 py-3 flex justify-around items-center z-50">
+<div class="flex flex-col items-center text-violet-400">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="text-[10px] mt-1">Generate</span>
+</div>
+<div class="flex flex-col items-center text-neutral-500">
+<span class="material-symbols-outlined">brush</span>
+<span class="text-[10px] mt-1">Edit</span>
+</div>
+<div class="flex flex-col items-center text-neutral-500">
+<span class="material-symbols-outlined">history</span>
+<span class="text-[10px] mt-1">History</span>
+</div>
+<div class="flex flex-col items-center text-neutral-500">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] mt-1">Profile</span>
+</div>
+</div>
+</body></html>
