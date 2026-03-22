@@ -726,7 +726,8 @@ async function handleGenerate(){
     animateProgress(100,200);
     setTimeout(()=>{
       imgs.forEach(d=>S.images.unshift({dataUrl:d,prompt:final,isUpscaled:false,seed:Date.now()}));
-      renderGallery();showLoading(false);setBusy(false);showToast(`สร้างภาพสำเร็จ ${imgs.length} ภาพ`);
+      renderGallery();showLoading(false);setBusy(false);
+      showPromptReport(final,imgs.length);
     },400);
   }catch(err){console.error(err);showToast(err.message,'error');showLoading(false);setBusy(false);}
 }
@@ -867,6 +868,72 @@ async function downloadAll(){
   showToast('Download ZIP สำเร็จ!');
 }
 
+// ===== PROMPT REPORT =====
+function showPromptReport(fullPrompt,count){
+  showToast(`✅ สร้างภาพสำเร็จ ${count} ภาพ!`);
+  // Build component breakdown
+  const base=$('prompt-input').value.trim();
+  const styles=[...S.styles];
+  const poses=[...S.poses];
+  const cam=$('sel-camera').value,lens=$('sel-lens').value;
+  const angle=$('sel-angle').value,light=$('sel-lighting').value;
+  const engine=$('sel-engine').value;
+  const engineNames={'imagen-fast':'⚡ Imagen 4 Fast','flash':'🍌🍌 Nano Banana 2','imagen':'✨ Imagen 4 Standard','imagen-ultra':'💎 Imagen 4 Ultra'};
+
+  const rows=[
+    {label:'Base Prompt',value:base,color:'#b6a0ff'},
+    {label:'Art Styles',value:styles.length?styles.join(' + '):'—',color:'#c492fe'},
+    {label:'Pose',value:poses.length?poses.join(' + '):'—',color:'#ff97b8'},
+    {label:'Camera Body',value:cam||'—',color:'#7e51ff'},
+    {label:'Lens',value:lens||'—',color:'#7e51ff'},
+    {label:'Camera Angle',value:angle||'—',color:'#7e51ff'},
+    {label:'Lighting',value:light||'—',color:'#ff97b8'},
+    {label:'AI Model',value:engineNames[engine]||engine,color:'#b6a0ff'},
+    {label:'Aspect Ratio',value:S.aspect,color:'#adaaaa'},
+    {label:'Image Count',value:`${count} ภาพ`,color:'#adaaaa'},
+  ].filter(r=>r.value&&r.value!=='—');
+
+  // Create/update report panel
+  let panel=document.getElementById('prompt-report-panel');
+  if(!panel){
+    panel=document.createElement('div');
+    panel.id='prompt-report-panel';
+    panel.style.cssText='position:fixed;bottom:80px;right:24px;z-index:600;width:340px;max-height:80vh;overflow-y:auto;border-radius:16px;border:1px solid rgba(182,160,255,0.2);box-shadow:0 24px 64px rgba(0,0,0,0.7);transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .3s;transform:translateX(120%);opacity:0';
+    panel.innerHTML=`
+      <div style="background:rgba(19,19,19,0.95);backdrop-filter:blur(24px);border-radius:16px;overflow:hidden">
+        <div style="padding:1rem 1.25rem 0.75rem;border-bottom:1px solid rgba(72,72,71,0.4);display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:.625rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#adaaaa">Prompt Report</div>
+            <div style="font-size:.8rem;font-weight:700;color:#fff;margin-top:2px">Generation Complete ✨</div>
+          </div>
+          <button onclick="document.getElementById('prompt-report-panel').style.transform='translateX(120%)';document.getElementById('prompt-report-panel').style.opacity='0'" style="width:28px;height:28px;border-radius:50%;background:#262626;border:none;color:#adaaaa;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">&#10005;</button>
+        </div>
+        <div id="report-rows" style="padding:0.75rem 1.25rem 0.5rem;space-y:0.5rem"></div>
+        <div style="padding:0.75rem 1.25rem;border-top:1px solid rgba(72,72,71,0.4)">
+          <div style="font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#adaaaa;margin-bottom:0.5rem">Full Assembled Prompt</div>
+          <div id="report-full-prompt" style="font-size:.65rem;color:#b6a0ff;line-height:1.6;background:rgba(182,160,255,0.05);padding:0.625rem;border-radius:8px;border:1px solid rgba(182,160,255,0.1);word-break:break-word"></div>
+          <button onclick="navigator.clipboard.writeText(document.getElementById('report-full-prompt').textContent)" style="margin-top:0.5rem;width:100%;padding:.5rem;background:rgba(182,160,255,0.1);border:1px solid rgba(182,160,255,0.2);border-radius:8px;color:#b6a0ff;font-size:.65rem;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.05em">Copy Full Prompt</button>
+        </div>
+      </div>`;
+    document.body.appendChild(panel);
+  }
+
+  // Fill rows
+  const rowsEl=document.getElementById('report-rows');
+  rowsEl.innerHTML=rows.map(r=>`
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;padding:.375rem 0;border-bottom:1px solid rgba(72,72,71,0.25)">
+      <span style="font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#767575;flex-shrink:0;width:90px">${r.label}</span>
+      <span style="font-size:.65rem;font-weight:600;color:${r.color};text-align:right;word-break:break-word">${r.value}</span>
+    </div>`).join('');
+
+  document.getElementById('report-full-prompt').textContent=fullPrompt;
+
+  // Animate in
+  setTimeout(()=>{panel.style.transform='translateX(0)';panel.style.opacity='1';},100);
+  // Auto-hide after 10s
+  setTimeout(()=>{panel.style.transform='translateX(120%)';panel.style.opacity='0';},10000);
+}
+
 // ===== RESET =====
 function resetWorkspace(){$('modal-reset').classList.remove('hidden');}
 function confirmReset(){
@@ -937,6 +1004,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     showToast('อัปโหลดภาพ Reference สำเร็จ');
   });
 
+  // ===== LIVE PROMPT UPDATER =====
+  function liveUpdate(){
+    const base=$('prompt-input').value.trim();
+    if(!base){updateNativePrompt('—');return;}
+    updateNativePrompt(assemblePrompt(base));
+  }
+
   // Preset buttons (style/pose toggles)
   document.querySelectorAll('.preset-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -944,6 +1018,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       const set=g==='style'?S.styles:S.poses;
       if(set.has(v)){set.delete(v);btn.classList.remove('active');}
       else{set.add(v);btn.classList.add('active');}
+      liveUpdate();
     });
   });
 
@@ -980,12 +1055,21 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('#aspect-btns .aspect-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
       document.querySelectorAll('#aspect-btns .aspect-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');S.aspect=btn.dataset.val;
+      btn.classList.add('active');S.aspect=btn.dataset.val;liveUpdate();
     });
   });
 
+  // Camera/Lens/Angle/Lighting — live update prompt
+  ['sel-camera','sel-lens','sel-angle','sel-lighting'].forEach(id=>{
+    $(id).addEventListener('change',liveUpdate);
+  });
+
+  // Prompt input — live update
+  $('prompt-input').addEventListener('input',liveUpdate);
+
   // Batch count slider
-  $('batch-count').addEventListener('input',e=>{$('batch-display').textContent=e.target.value;S.count=parseInt(e.target.value);});
+  $('batch-count').addEventListener('input',e=>{$('batch-display').textContent=e.target.value;S.count=parseInt(e.target.value);liveUpdate();});
+
 
   // Reset
   $('btn-reset').addEventListener('click',resetWorkspace);
