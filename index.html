@@ -164,8 +164,10 @@
       <div>
         <label class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">AI Engine</label>
         <select id="sel-engine" class="w-full mt-0.5 bg-surface-container-highest border-none rounded text-xs text-on-surface focus:ring-1 focus:ring-primary py-1.5 px-2">
-          <option value="flash">⚡ Nano Banana 2.5 (Fast)</option>
-          <option value="imagen">✨ Nano Banana Pro (Quality)</option>
+          <option value="flash">🍌🍌 Nano Banana 2 (Fast)</option>
+          <option value="imagen">✨ Imagen 4 Standard (Quality)</option>
+          <option value="imagen-fast">⚡ Imagen 4 Fast (Speed)</option>
+          <option value="imagen-ultra">💎 Imagen 4 Ultra (Best)</option>
         </select>
       </div>
       <div>
@@ -507,7 +509,11 @@
 <script>
 // ===== CONFIG =====
 const API_BASE='https://generativelanguage.googleapis.com/v1beta';
-const MODELS={text:'gemini-2.0-flash',flash:'gemini-2.0-flash-exp',imagen:'imagen-3.0-generate-001'};
+const MODELS={
+  text:   'gemini-2.5-flash',                   // Gemini 2.5 Flash — Translation, Inspire Me, Image-to-Text
+  flash:  'gemini-3.1-flash-image-preview',     // Nano Banana 2 — Fast image gen, Magic Edit, Upscale
+  imagen: 'imagen-4.0-generate-001'             // Imagen 4 — High-quality Text-to-Image
+};
 const SAFETY=[{category:'HARM_CATEGORY_HARASSMENT',threshold:'BLOCK_ONLY_HIGH'},{category:'HARM_CATEGORY_HATE_SPEECH',threshold:'BLOCK_ONLY_HIGH'},{category:'HARM_CATEGORY_SEXUALLY_EXPLICIT',threshold:'BLOCK_ONLY_HIGH'},{category:'HARM_CATEGORY_DANGEROUS_CONTENT',threshold:'BLOCK_ONLY_HIGH'}];
 
 // ===== STATE =====
@@ -596,9 +602,11 @@ async function genFlash(prompt,refBase,refMime){
   return`data:image/png;base64,${p.inlineData.data}`;
 }
 
-async function genImagen(prompt,aspect,count){
+async function genImagen(prompt,aspect,count,variant='standard'){
   const k=apiKey();if(!k)throw new Error('กรุณาใส่ API Key');
-  const r=await fetch(`${API_BASE}/models/${MODELS.imagen}:predict?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({instances:[{prompt}],parameters:{sampleCount:Math.min(count,4),aspectRatio:aspect}})});
+  const modelMap={standard:'imagen-4.0-generate-001',fast:'imagen-4.0-fast-generate-001',ultra:'imagen-4.0-ultra-generate-001'};
+  const model=modelMap[variant]||modelMap.standard;
+  const r=await fetch(`${API_BASE}/models/${model}:predict?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({instances:[{prompt}],parameters:{sampleCount:Math.min(count,variant==='ultra'?1:4),aspectRatio:aspect}})});
   if(!r.ok){const e=await r.json();throw new Error(e.error?.message||`HTTP ${r.status}`);}
   const d=await r.json();
   if(!d.predictions?.length)throw new Error('Imagen ไม่ส่งภาพกลับมา');
@@ -642,8 +650,9 @@ async function handleGenerate(){
     const engine=$('sel-engine').value,count=parseInt($('batch-count').value)||4;
     animateProgress(60,2000);showLoading(true,'AI กำลังสร้างภาพของคุณ...');
     let imgs=[];
-    if(engine==='imagen'){imgs=await genImagen(final,S.aspect,count);animateProgress(95,500);}
-    else{for(let i=0;i<count;i++){imgs.push(await genFlash(final,S.refBase64,S.refMime));animateProgress(60+(i+1)/count*35,400);}}
+    const engineVariantMap={'flash':'flash','imagen':'standard','imagen-fast':'fast','imagen-ultra':'ultra'};
+    if(engine==='flash'){for(let i=0;i<count;i++){imgs.push(await genFlash(final,S.refBase64,S.refMime));animateProgress(60+(i+1)/count*35,400);}}
+    else{const variant=engineVariantMap[engine]||'standard';imgs=await genImagen(final,S.aspect,count,variant);animateProgress(95,500);}
     animateProgress(100,200);
     setTimeout(()=>{
       imgs.forEach(d=>S.images.unshift({dataUrl:d,prompt:final,isUpscaled:false,seed:Date.now()}));
